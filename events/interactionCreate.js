@@ -29,6 +29,7 @@ module.exports = {
       }
 
       if (interaction.isStringSelectMenu() || interaction.isRoleSelectMenu()) {
+        if (area === 'ticket') return await tickets.chooseType(interaction);
         if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
         if (area === 'beheer') return await admin.handleSelect(interaction, action);
         return;
@@ -41,7 +42,7 @@ module.exports = {
       if (area === 'ticket') {
         switch (action) {
           case 'open':
-            return await tickets.createTicket(interaction);
+            return await tickets.openTypes(interaction);
           case 'claim':
             return await tickets.claimTicket(interaction);
           case 'close':
@@ -87,5 +88,8 @@ async function handleModal(interaction, area, action, rest) {
   }
   if (area === 'opkomst' && action === 'nieuw') {
     return await opkomst.handleModal(interaction);
+  }
+  if (area === 'ticket' && action === 'form') {
+    return await tickets.createFromForm(interaction, rest[0]);
   }
 }
