@@ -5,7 +5,7 @@ Bot voor **Airborne Insertion Direct Seizure**. Twee commands, de rest zit in kn
 | Command | Wie | Wat het doet |
 |---|---|---|
 | `/beheer` | beheerders | Paneel om het ticketpaneel en welkomstbericht te bewerken, leden en rollen te beheren en de rol voor `/paneel` te kiezen |
-| `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel in het kanaal waar je het typt |
+| `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel of stuurt een embed die je zelf invult |
 
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 Ledenaanmeldingen lopen via de knop **Ticket aanmaken** op het paneel.
@@ -79,8 +79,17 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
   aangevinkt is geven, uitgevinkt is afnemen, en je ziet meteen wat er is aangepast.
   **Kicken** vraagt eerst om bevestiging.
 * **Toegang** — kies met de roldropdown welke rol `/paneel` mag gebruiken. Die rol kan
-  daarmee het ticketpaneel in een kanaal zetten. Zonder keuze geldt `STAFF_ROLE_ID`,
-  en is die er ook niet, dan alleen beheerders.
+  daarmee het ticketpaneel in een kanaal zetten en embeds sturen. Zonder keuze geldt
+  `STAFF_ROLE_ID`, en is die er ook niet, dan alleen beheerders.
+
+### /paneel
+
+De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
+
+* **Ticketpaneel plaatsen** — zet het ticketbericht met de aanmaakknop in dat kanaal.
+* **Embed sturen** — vul titel, tekst, kleur (hex), afbeelding-URL en voettekst in. De
+  embed komt in het kanaal waar je `/paneel` typte. Kleur en afbeelding mogen leeg;
+  zonder kleur wordt het A.I.D.S.-oranje gebruikt.
 
 De bot heeft **Rollen beheren** en **Leden kicken** nodig en moet hoger in de
 rollenlijst staan dan de rollen die je uitgeeft. Keuzes en embeds worden bewaard in
@@ -121,6 +130,7 @@ lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
+lib/embedComposer.js         het /paneel-menu: ticketpaneel of eigen embed
 lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/permissions.js           wie /beheer en /paneel mogen gebruiken
@@ -162,5 +172,5 @@ miste rechten om de leden op te halen.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.3.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.4.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
