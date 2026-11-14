@@ -1,11 +1,11 @@
 /**
  * A.I.D.S. - Airborne Insertion Direct Seizure
- * Basis van de Discord-bot (Node.js / discord.js).
+ * Startpunt van de bot (Node.js / discord.js).
  *
- * Start met:  npm start
+ * Start met:  npm start   of   node index.js
  *
- * Nieuwe /-command toevoegen? Zet een bestand in src/commands/ en start
- * opnieuw. De bot laadt alles in die map automatisch.
+ * Nieuwe /-command toevoegen? Zet een bestand in commands/ en start opnieuw.
+ * De bot laadt alles in die map automatisch.
  */
 
 const fs = require('node:fs');

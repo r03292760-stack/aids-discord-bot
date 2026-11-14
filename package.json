@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Discord-bot voor Airborne Insertion Direct Seizure: ticketsysteem, welkomstbericht en een basis om simpel nieuwe /-commands aan te hangen.",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node index.js"
   },
   "engines": {
     "node": ">=18"

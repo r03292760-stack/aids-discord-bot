@@ -3,7 +3,8 @@
 Bot voor **Airborne Insertion Direct Seizure** met een compleet ticketsysteem.
 Geschreven in **Node.js** met **discord.js**, dus klaar voor je hosting met Node 25.
 
-Eén basis, en nieuwe `/`-commands toevoegen is één bestandje in `src/commands/`.
+`index.js` in de hoofdmap is het startpunt. Een nieuwe `/`-command toevoegen is
+één bestandje in `commands/`.
 
 ---
 
@@ -34,7 +35,8 @@ invult) de A.I.D.S.-banner. Botaccounts worden overgeslagen.
 ## Op je hosting zetten
 
 1. Zet de bestanden op je hosting (of laat de hosting je GitHub-repo gebruiken).
-2. Zorg dat deze omgevingsvariabelen in het hostingpaneel staan (of in `.env`):
+2. Startcommando: `node index.js` of `npm start`.
+3. Zorg dat deze omgevingsvariabelen in het hostingpaneel staan (of in `.env`):
 
    | Variabele | Verplicht | Betekenis |
    |---|---|---|
@@ -48,8 +50,6 @@ invult) de A.I.D.S.-banner. Botaccounts worden overgeslagen.
 
    \* Zonder stafrol kunnen alleen beheerders tickets zien en beheren.
    Zonder logkanaal wordt er geen transcript bewaard.
-
-3. Startcommando: `npm start` (je hosting doet meestal zelf `npm install`).
 
 ### Lokaal draaien
 
@@ -75,11 +75,11 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
 
 ## Een eigen `/`-command toevoegen
 
-Zet een bestand in `src/commands/` — de bot laadt de map automatisch, je hoeft
-niets te registreren.
+Zet een bestand in `commands/` — de bot laadt de map automatisch, je hoeft niets
+te registreren.
 
 ```js
-// src/commands/helikopter.js
+// commands/helikopter.js
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -93,24 +93,24 @@ module.exports = {
 Bot opnieuw starten en `/helikopter` staat erin.
 
 * **Eenmalige dingen** (welkomstbericht, reactierollen, autorole) horen in een
-  event-bestand in `src/events/`, zoals `guildMemberAdd.js`.
+  event-bestand in `events/`, zoals `guildMemberAdd.js`.
 * **Knoppen die na een restart moeten blijven werken** gebruik je met een vaste
-  `customId`; de afhandeling staat in `src/events/interactionCreate.js`,
-  precies zoals de ticketknoppen.
+  `customId`; de afhandeling staat in `events/interactionCreate.js`, precies
+  zoals de ticketknoppen.
 
 ---
 
 ## Bestanden
 
 ```
-src/index.js                 basis: intents, commands en events laden
-src/lib/tickets.js            ticketlogica (kanaal, claimen, sluiten, transcript)
-src/lib/ticketStore.js        data/tickets.json: open tickets en nummering
-src/lib/embeds.js             alle embeds in de A.I.D.S.-stijl
-src/lib/config.js             .env uitlezen en ID's controleren
-src/commands/*.js             alle slash commands (automatisch geladen)
-src/events/*.js               ready, interactionCreate, guildMemberAdd, channelDelete
-data/tickets.json             wordt automatisch gemaakt
+index.js                     startpunt: intents, commands en events laden
+lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
+lib/ticketStore.js           data/tickets.json: open tickets en nummering
+lib/embeds.js                alle embeds in de A.I.D.S.-stijl
+lib/config.js                .env uitlezen en ID's controleren
+commands/*.js                alle slash commands (automatisch geladen)
+events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete
+data/tickets.json            wordt automatisch gemaakt
 ```
 
 `data/tickets.json` mag je niet weggooien als er tickets open staan — dan is de
