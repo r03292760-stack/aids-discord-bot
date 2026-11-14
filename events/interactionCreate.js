@@ -1,5 +1,7 @@
 const { Events, MessageFlags } = require('discord.js');
 const tickets = require('../lib/tickets');
+const admin = require('../lib/adminPanel');
+const members = require('../lib/members');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -13,25 +15,35 @@ module.exports = {
         return;
       }
 
+      if (interaction.isModalSubmit()) {
+        const [namespace, area, kind, which] = interaction.customId.split(':');
+        if (namespace !== 'aids' || area !== 'beheer' || kind !== 'modal') return;
+        return await admin.handleModal(interaction, which);
+      }
+
       if (!interaction.isButton()) return;
 
-      const [namespace, kind, action] = interaction.customId.split(':');
-      if (namespace !== 'aids' || kind !== 'ticket') return;
+      const [namespace, area, action, ...rest] = interaction.customId.split(':');
+      if (namespace !== 'aids') return;
 
-      switch (action) {
-        case 'open':
-          return await tickets.createTicket(interaction);
-        case 'claim':
-          return await tickets.claimTicket(interaction);
-        case 'close':
-          return await tickets.askClose(interaction);
-        case 'confirm':
-          return await tickets.closeTicket(interaction, { confirmed: true });
-        case 'cancel':
-          return await tickets.cancelClose(interaction);
-        default:
-          return;
+      if (area === 'ticket') {
+        switch (action) {
+          case 'open':
+            return await tickets.createTicket(interaction);
+          case 'claim':
+            return await tickets.claimTicket(interaction);
+          case 'close':
+            return await tickets.askClose(interaction);
+          case 'confirm':
+            return await tickets.closeTicket(interaction, { confirmed: true });
+          case 'cancel':
+            return await tickets.cancelClose(interaction);
+        }
+        return;
       }
+
+      if (area === 'beheer') return await admin.handleButton(interaction, action, rest);
+      if (area === 'leden') return await members.handleButton(interaction, action, rest);
     } catch (error) {
       console.error('Fout bij interactie:', error);
 
