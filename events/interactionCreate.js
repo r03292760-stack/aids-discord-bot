@@ -22,6 +22,11 @@ module.exports = {
 
       if (interaction.isModalSubmit()) return await handleModal(interaction, area, action, rest);
 
+      if (interaction.isChannelSelectMenu()) {
+        if (area === 'paneel') return await embedComposer.handleSelect(interaction);
+        return;
+      }
+
       if (interaction.isStringSelectMenu() || interaction.isRoleSelectMenu()) {
         if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
         if (area === 'beheer') return await admin.handleSelect(interaction, action);
@@ -75,6 +80,6 @@ async function handleModal(interaction, area, action, rest) {
     return await memberPanel.handleModal(interaction);
   }
   if (area === 'paneel' && action === 'modal') {
-    return await embedComposer.handleModal(interaction);
+    return await embedComposer.handleModal(interaction, rest[0]);
   }
 }

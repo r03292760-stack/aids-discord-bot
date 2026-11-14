@@ -1,6 +1,6 @@
 {
   "name": "aids-discord-bot",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "description": "Discord-bot voor Airborne Insertion Direct Seizure: ticketsysteem, welkomstbericht en een basis om simpel nieuwe /-commands aan te hangen.",
   "main": "index.js",
