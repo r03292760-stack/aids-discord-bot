@@ -5,7 +5,7 @@ Bot voor **Airborne Insertion Direct Seizure**. Twee commands, de rest zit in kn
 | Command | Wie | Wat het doet |
 |---|---|---|
 | `/beheer` | beheerders | Paneel om het ticketpaneel en welkomstbericht te bewerken, leden en rollen te beheren en de rol voor `/paneel` te kiezen |
-| `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel of stuurt een embed die je zelf invult, ook naar een kanaal dat je in het menu kiest |
+| `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel of stuurt een embed die je zelf invult, naar een kanaal naar keuze; daarna kun je hem bewerken of verwijderen |
 
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 Ledenaanmeldingen lopen via de knop **Ticket aanmaken** op het paneel.
@@ -94,6 +94,11 @@ De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
   invulvenster opent meteen voor dát kanaal, zonder eerst zelf naar dat kanaal te
   gaan. De bot moet er berichten en embeds mogen plaatsen.
 
+Na het sturen krijg je onder de bevestiging twee knoppen: **Bewerken** opent
+hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt eerst om
+bevestiging. Beide werken alleen voor jou (de bevestiging is privé), en ook na een
+herstart — de knoppen onthouden om welk bericht het gaat.
+
 De bot heeft **Rollen beheren** en **Leden kicken** nodig en moet hoger in de
 rollenlijst staan dan de rollen die je uitgeeft. Keuzes en embeds worden bewaard in
 `data/settings.json` en blijven dus na een herstart.
@@ -133,7 +138,7 @@ lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
-lib/embedComposer.js         het /paneel-menu: ticketpaneel of eigen embed (ook naar een gekozen kanaal)
+lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
 lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/permissions.js           wie /beheer en /paneel mogen gebruiken
@@ -175,5 +180,5 @@ miste rechten om de leden op te halen.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.5.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.6.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
