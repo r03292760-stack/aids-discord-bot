@@ -22,7 +22,7 @@ module.exports = {
         { name: 'Versie', value: version.label, inline: true },
         {
           name: 'Commands',
-          value: commands.map((name) => `\\`/${name}\\``).join(' ') || 'nog geen',
+          value: commands.map((name) => `\`/${name}\``).join(' ') || 'nog geen',
         }
       )
       .setFooter({ text: 'Airborne Insertion Direct Seizure · tempo, initiatief en controle' });
