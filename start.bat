@@ -2,11 +2,9 @@
 title A.I.D.S. bot
 cd /d "%~dp0"
 
-if not exist .venv (
+if not exist node_modules (
     echo Eenmalig de bot klaarzetten...
-    python -m venv .venv || py -3 -m venv .venv
-    .venv\Scripts\python.exe -m pip install --upgrade pip
-    .venv\Scripts\python.exe -m pip install -r requirements.txt
+    call npm install
 )
 
 if not exist .env (
@@ -19,7 +17,7 @@ if not exist .env (
     exit /b
 )
 
-.venv\Scripts\python.exe main.py
+node src\index.js
 echo.
 echo De bot is gestopt. Druk op een toets om dit venster te sluiten.
 pause >nul

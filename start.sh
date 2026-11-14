@@ -2,11 +2,9 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if [ ! -d .venv ]; then
+if [ ! -d node_modules ]; then
     echo "Eenmalig de bot klaarzetten..."
-    python3 -m venv .venv
-    .venv/bin/python -m pip install --upgrade pip
-    .venv/bin/python -m pip install -r requirements.txt
+    npm install
 fi
 
 if [ ! -f .env ]; then
@@ -15,4 +13,4 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-exec .venv/bin/python main.py
+exec node src/index.js
