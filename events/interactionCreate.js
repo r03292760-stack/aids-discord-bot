@@ -53,7 +53,7 @@ module.exports = {
 
       if (area === 'beheer') return await admin.handleButton(interaction, action, rest);
       if (area === 'memb') return await memberPanel.handleButton(interaction, action, rest);
-      if (area === 'paneel') return await embedComposer.handleButton(interaction, action);
+      if (area === 'paneel') return await embedComposer.handleButton(interaction, action, rest);
     } catch (error) {
       console.error('Fout bij interactie:', error);
 
@@ -80,6 +80,6 @@ async function handleModal(interaction, area, action, rest) {
     return await memberPanel.handleModal(interaction);
   }
   if (area === 'paneel' && action === 'modal') {
-    return await embedComposer.handleModal(interaction, rest[0]);
+    return await embedComposer.handleModal(interaction, rest[0], rest[1]);
   }
 }
