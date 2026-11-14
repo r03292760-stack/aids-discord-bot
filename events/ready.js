@@ -13,7 +13,12 @@ module.exports = {
     try {
       if (guildId) {
         await client.application.commands.set(commands, guildId);
-        console.log(`${commands.length} commands klaargezet op server ${guildId}`);
+
+        // Oude globale commands opruimen: die blijven naast de servercommands
+        // staan, waardoor je alles dubbel ziet in Discord.
+        await client.application.commands.set([]);
+
+        console.log(`${commands.length} commands klaargezet op server ${guildId} (globale lijst geleegd)`);
       } else {
         await client.application.commands.set(commands);
         console.log(
