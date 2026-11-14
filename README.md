@@ -17,7 +17,7 @@ Geschreven in **Node.js** met **discord.js**, dus klaar voor je hosting met Node
 | `/lid-verwijderen @lid` | staf | Haalt een lid weer uit het ticket |
 | `/sluit` | staf of opener | Sluit het ticket, archiveert het gesprek en verwijdert het kanaal |
 | `/welkom-test` | beheer/staf | Laat zien hoe het welkomstbericht eruitziet |
-| `/beheer` | beheer | Paneel voor ticketpaneel, welkomstbericht en leden/rollenbeheer |
+| `/beheer` | beheerdersrol | Paneel voor ticketpaneel, welkomstbericht en leden/rollenbeheer |
 | `/ping` | iedereen | Check of de bot wakker is |
 | `/info` | iedereen | Bot-info, versie + commit en alle commands |
 
@@ -44,6 +44,7 @@ invult) de A.I.D.S.-banner. Botaccounts worden overgeslagen.
    | `DISCORD_TOKEN` | ja | Bot-token uit de Discord Developer Portal |
    | `GUILD_ID` | nee | Server-ID; commands staan dan direct klaar |
    | `STAFF_ROLE_ID` | nee* | Rol die tickets ziet en beheert |
+   | `BEHEER_ROLE_ID` | nee | Rol die `/beheer` en het ledenbeheer mag gebruiken |
    | `TICKET_CATEGORY_ID` | nee | Categorie voor ticketkanalen |
    | `TICKET_LOG_CHANNEL_ID` | nee* | Kanaal voor de transcripts |
    | `WELCOME_CHANNEL_ID` | nee | Kanaal voor het welkomstbericht |
@@ -51,6 +52,8 @@ invult) de A.I.D.S.-banner. Botaccounts worden overgeslagen.
 
    \* Zonder stafrol kunnen alleen beheerders tickets zien en beheren.
    Zonder logkanaal wordt er geen transcript bewaard.
+   Zonder `BEHEER_ROLE_ID` geldt `STAFF_ROLE_ID`; is die er ook niet, dan alleen
+   beheerders met **Beheer server**.
 
 ### Lokaal draaien
 
@@ -66,10 +69,12 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
 
 1. **Server Members Intent** en **Message Content Intent** aanzetten in de
    Developer Portal (Bot → Privileged Gateway Intents). Message Content is nodig
-   om tickets te archiveren.
+   om tickets te archiveren, Server Members om de ledenlijst en de dropdowns te
+   vullen.
 2. Nodig de bot uit met de scopes `bot` en `applications.commands` en de rechten
-   Kanalen beheren, Berichten beheren, Embed Links, Bestanden versturen.
-3. Zet de botrol **boven** de stafrol in de rollenlijst.
+   Kanalen beheren, Berichten beheren, Rollen beheren, Leden kicken, Embed Links
+   en Bestanden versturen.
+3. Zet de botrol **boven** de stafrol en boven de rollen die je wilt uitdelen.
 4. Typ `/ticketpanel` in het kanaal waar het paneel moet komen.
 
 ---
@@ -111,17 +116,19 @@ Bot opnieuw starten en `/helikopter` staat erin.
 * **Welkomstbericht** — dezelfde editor, met `{lid}` als ping van het nieuwe lid en een
   veld voor de afbeelding-URL. **Stuur testbericht** stuurt een voorbeeld naar je
   welkomstkanaal.
-* **Leden** — een keuzelijst met de nieuwste leden. Zoek iemand op (een deel van) de
-  naam met **Zoeken**. Kies een lid en je ziet zijn rollen, wanneer hij op de server kwam
-  en hoe oud het account is.
-  Met de **roldropdown** vink je aan welke rollen hij moet hebben: aangevinkt is geven,
-  uitgevinkt is afnemen, en je ziet meteen wat er is aangepast. **Kicken** vraagt eerst
-  om bevestiging.
+* **Leden** — een keuzelijst met de leden, 25 per pagina, met **Vorige** en **Volgende**
+  om door iedereen te bladeren. Zoek iemand direct op (een deel van) de naam met
+  **Zoeken**. Kies een lid en je ziet zijn rollen, wanneer hij op de server kwam en hoe
+  oud het account is. Met de **roldropdown** vink je aan welke rollen hij moet hebben:
+  aangevinkt is geven, uitgevinkt is afnemen, en je ziet meteen wat er is aangepast.
+  **Kicken** vraagt eerst om bevestiging.
 
-Alles is alleen voor beheerders (Beheer server). De bot heeft **Rollen beheren** en
-**Leden kicken** nodig en moet hoger in de rollenlijst staan dan de rollen die je
-uitdeelt. Aanpassingen worden bewaard in `data/settings.json` en blijven dus na een
-herstart.
+**Wie mag dit?** Zet `BEHEER_ROLE_ID` in je omgeving en alleen die rol komt erin
+(plus de servereigenaar, zodat je jezelf nooit buitensluit). Zet je die niet, dan
+geldt `STAFF_ROLE_ID`; is die er ook niet, dan alleen beheerders met **Beheer
+server**. De bot heeft **Rollen beheren** en **Leden kicken** nodig en moet hoger
+in de rollenlijst staan dan de rollen die je uitgeeft. Aanpassingen aan de embeds
+worden bewaard in `data/settings.json` en blijven dus na een herstart.
 
 ---
 
@@ -133,8 +140,9 @@ lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/settings.js              data/settings.json: aanpasbare embeds via /beheer
 lib/adminPanel.js            beheerpaneel met knoppen, modals en previews
-lib/memberPanel.js           ledenpaneel: keuzelijsten, rollen aanpassen, kicken
+lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
+lib/permissions.js           wie /beheer mag gebruiken (rol uit BEHEER_ROLE_ID)
 lib/embeds.js                alle embeds in de A.I.D.S.-stijl
 lib/config.js                .env uitlezen en ID's controleren
 lib/version.js               versie en commit voor /info
@@ -155,6 +163,10 @@ database te zetten; vraag dat na bij je host.
 **Commands verschijnen niet.** Zet `GUILD_ID` in de omgeving en herstart.
 Globale commands kunnen tot een uur duren.
 
+**Ik zie dubbele commands.** Er staan dan nog globale commands naast de
+servercommands. De bot maakt de globale lijst bij elke start leeg; blijft het
+hangen, wis ze dan via **Serverinstellingen → Integraties**.
+
 **"Kon geen ticketkanaal maken".** De bot mist **Kanalen beheren**, of zijn rol
 staat te laag. Zet de botrol hoger dan de stafrol.
 
@@ -163,10 +175,13 @@ staat te laag. Zet de botrol hoger dan de stafrol.
 **Er komt geen welkomstbericht.** `WELCOME_CHANNEL_ID` ontbreekt of is geen
 tekstkanaal waar de bot mag posten.
 
+**De ledenlijst is leeg of kort.** **Server Members Intent** staat uit, of de bot
+miste rechten om de leden op te halen.
+
 **"Geen DISCORD_TOKEN gevonden".** De variabele staat niet in de omgeving of
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** Typ `/info`. Bij **Versie** staat bijvoorbeeld
-`v1.1.0 · abc1234`: de versie uit `package.json` en de commit die nu draait.
+`v1.2.0 · abc1234`: de versie uit `package.json` en de commit die nu draait.
 Zie je een oude commit of "geen .git", dan heeft de bot de nieuwe code niet
 opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
