@@ -1,7 +1,7 @@
 const { Events, MessageFlags } = require('discord.js');
 const tickets = require('../lib/tickets');
 const admin = require('../lib/adminPanel');
-const members = require('../lib/members');
+const memberPanel = require('../lib/memberPanel');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -15,16 +15,18 @@ module.exports = {
         return;
       }
 
-      if (interaction.isModalSubmit()) {
-        const [namespace, area, kind, which] = interaction.customId.split(':');
-        if (namespace !== 'aids' || area !== 'beheer' || kind !== 'modal') return;
-        return await admin.handleModal(interaction, which);
+      const parts = interaction.customId ? interaction.customId.split(':') : [];
+      const [namespace, area, action, ...rest] = parts;
+      if (namespace !== 'aids') return;
+
+      if (interaction.isModalSubmit()) return await handleModal(interaction, area, action, rest);
+
+      if (interaction.isStringSelectMenu()) {
+        if (area !== 'memb') return;
+        return await memberPanel.handleSelect(interaction, action);
       }
 
       if (!interaction.isButton()) return;
-
-      const [namespace, area, action, ...rest] = interaction.customId.split(':');
-      if (namespace !== 'aids') return;
 
       if (area === 'ticket') {
         switch (action) {
@@ -43,7 +45,7 @@ module.exports = {
       }
 
       if (area === 'beheer') return await admin.handleButton(interaction, action, rest);
-      if (area === 'leden') return await members.handleButton(interaction, action, rest);
+      if (area === 'memb') return await memberPanel.handleButton(interaction, action, rest);
     } catch (error) {
       console.error('Fout bij interactie:', error);
 
@@ -61,3 +63,12 @@ module.exports = {
     }
   },
 };
+
+async function handleModal(interaction, area, action, rest) {
+  if (area === 'beheer' && action === 'modal') {
+    return await admin.handleModal(interaction, rest[0]);
+  }
+  if (area === 'memb' && action === 'search') {
+    return await memberPanel.handleModal(interaction);
+  }
+}

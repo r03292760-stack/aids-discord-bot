@@ -4,7 +4,7 @@ const admin = require('../lib/adminPanel');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('beheer')
-    .setDescription('Open het beheerpaneel voor het ticketpaneel en het welkomstbericht.')
+    .setDescription('Beheer tickets, het welkomstbericht en leden/rollen.')
     .setDefaultMemberPermissions(8), // Beheer server
 
   async execute(interaction, client) {
