@@ -19,7 +19,7 @@ Geschreven in **Node.js** met **discord.js**, dus klaar voor je hosting met Node
 | `/welkom-test` | beheer/staf | Laat zien hoe het welkomstbericht eruitziet |
 | `/beheer` | beheer | Paneel voor ticketpaneel, welkomstbericht en leden/rollenbeheer |
 | `/ping` | iedereen | Check of de bot wakker is |
-| `/info` | iedereen | Bot-info en alle commands |
+| `/info` | iedereen | Bot-info, versie + commit en alle commands |
 
 In een ticket staan knoppen: **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 
@@ -137,6 +137,7 @@ lib/memberPanel.js           ledenpaneel: keuzelijsten, rollen aanpassen, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/embeds.js                alle embeds in de A.I.D.S.-stijl
 lib/config.js                .env uitlezen en ID's controleren
+lib/version.js               versie en commit voor /info
 commands/*.js                alle slash commands (automatisch geladen)
 events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete
 data/tickets.json            wordt automatisch gemaakt
@@ -164,3 +165,8 @@ tekstkanaal waar de bot mag posten.
 
 **"Geen DISCORD_TOKEN gevonden".** De variabele staat niet in de omgeving of
 `.env` ontbreekt.
+
+**Is mijn update gelukt?** Typ `/info`. Bij **Versie** staat bijvoorbeeld
+`v1.1.0 · abc1234`: de versie uit `package.json` en de commit die nu draait.
+Zie je een oude commit of "geen .git", dan heeft de bot de nieuwe code niet
+opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
