@@ -3,10 +3,10 @@ const tickets = require('../lib/tickets');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('sluit')
-    .setDescription('Sluit dit ticket en archiveer het gesprek.'),
+    .setName('paneel')
+    .setDescription('Plaats het ticketpaneel in dit kanaal.'),
 
   async execute(interaction) {
-    return tickets.closeTicket(interaction);
+    return tickets.sendPanel(interaction);
   },
 };

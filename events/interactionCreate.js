@@ -21,9 +21,10 @@ module.exports = {
 
       if (interaction.isModalSubmit()) return await handleModal(interaction, area, action, rest);
 
-      if (interaction.isStringSelectMenu()) {
-        if (area !== 'memb') return;
-        return await memberPanel.handleSelect(interaction, action);
+      if (interaction.isStringSelectMenu() || interaction.isRoleSelectMenu()) {
+        if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
+        if (area === 'beheer') return await admin.handleSelect(interaction, action);
+        return;
       }
 
       if (!interaction.isButton()) return;
