@@ -5,7 +5,7 @@ Bot voor **Airborne Insertion Direct Seizure**. Twee commands, de rest zit in kn
 | Command | Wie | Wat het doet |
 |---|---|---|
 | `/beheer` | beheerders | Paneel om het ticketpaneel en welkomstbericht te bewerken, leden en rollen te beheren en de rol voor `/paneel` te kiezen |
-| `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel of stuurt een embed die je zelf invult, naar een kanaal naar keuze; daarna kun je hem bewerken of verwijderen |
+| `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel, stuurt een embed (naar een kanaal naar keuze, daarna te bewerken of verwijderen) of maakt een opkomst voor een sessie |
 
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 Ledenaanmeldingen lopen via de knop **Ticket aanmaken** op het paneel.
@@ -93,6 +93,13 @@ De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
 * **Doelkanaal** — de dropdown onder de knoppen. Kies daar een tekstkanaal en het
   invulvenster opent meteen voor dát kanaal, zonder eerst zelf naar dat kanaal te
   gaan. De bot moet er berichten en embeds mogen plaatsen.
+* **Opkomst** — vul de sessienaam, wanneer het is, een toelichting (kaart, modset,
+  slot) en eventueel een minimum aantal spelers in. De bot plaatst een bericht met
+  **✅ Aanwezig**, **❔ Misschien** en **❌ Afwezig**; iedereen op de server kan
+  klikken, en de lijsten en tellers werken meteen bij. Nog eens op dezelfde knop
+  klikken meldt je weer af. Met **🔒 Opkomst sluiten** (voor de paneelrol) zet je
+  aanmeldingen stop. Haalt de groep het minimum, dan wordt de embed groen; anders
+  staat er hoeveel spelers er nog nodig zijn.
 
 Na het sturen krijg je onder de bevestiging twee knoppen: **Bewerken** opent
 hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt eerst om
@@ -139,6 +146,8 @@ lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
+lib/opkomst.js               opkomst: aanmeldbericht met knoppen en quorum
+lib/opkomstStore.js          data/opkomst.json: wie doet mee aan welke sessie
 lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/permissions.js           wie /beheer en /paneel mogen gebruiken
@@ -148,11 +157,12 @@ lib/version.js               versie en commit (staat in /beheer)
 commands/*.js                alle slash commands (automatisch geladen)
 events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete
 data/tickets.json            wordt automatisch gemaakt
+data/opkomst.json            wordt automatisch gemaakt
 ```
 
-`data/` mag je niet weggooien als er tickets open staan of als je je embeds hebt
-aangepast. Zet je hosting geen bestanden vast? Dan is het verstandig om de data in
-een database te zetten; vraag dat na bij je host.
+`data/` mag je niet weggooien als er tickets of opkomsten open staan of als je je
+embeds hebt aangepast. Zet je hosting geen bestanden vast? Dan is het verstandig om
+de data in een database te zetten; vraag dat na bij je host.
 
 ---
 
@@ -176,9 +186,12 @@ tekstkanaal waar de bot mag posten.
 **De ledenlijst is leeg of kort.** **Server Members Intent** staat uit, of de bot
 miste rechten om de leden op te halen.
 
+**De opkomstknoppen reageren niet.** Meestal is de bot offline of is `data/opkomst.json`
+weg (dan bestaat die opkomst niet meer). Maak in dat geval een nieuwe opkomst aan.
+
 **"Geen DISCORD_TOKEN gevonden".** De variabele staat niet in de omgeving of
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.6.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.7.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
