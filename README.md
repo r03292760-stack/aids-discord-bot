@@ -10,6 +10,18 @@ Bot voor **Airborne Insertion Direct Seizure**. Twee commands, de rest zit in kn
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 Ledenaanmeldingen lopen via de knop **Ticket aanmaken** op het paneel.
 
+Die knop vraagt eerst **waarvoor** je komt. Je krijgt daarna alleen de vragen die
+erbij horen:
+
+* **🎯 Sollicitatie** — je Arma-naam, ervaring met mods en rollen, wanneer je speelt.
+* **⚠️ Klacht over een lid** — over wie, wat er gebeurde, wanneer en welk bewijs er is.
+* **🔓 Unban-aanvraag** — je naam, Steam-ID of spelersnaam, en waarom je terug mag.
+* **🛠️ Technisch probleem** — wat er misgaat, sinds wanneer en wat je al probeerde.
+
+Het kanaal heet naar de soort (`unban-0007`, `klacht-0008`), de antwoorden staan in
+de embed bovenaan en komen ook in het transcript terecht, zodat de staf later terug
+kan lezen wat er gevraagd en geantwoord is.
+
 Bij het sluiten gaat het gesprek als `ticket-0001.txt` naar je logkanaal, met een
 embed erboven, en verdwijnt het kanaal na 5 seconden. Per persoon kan er maar
 één ticket tegelijk open staan.
@@ -66,7 +78,8 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
 
 `/beheer` (beheerders) opent een privépaneel met vier knoppen:
 
-* **Ticketpaneel** — je ziet direct hoe het paneel eruitziet. **Aanpassen** opent een
+* **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met de knop die de
+  vier soorten aanbiedt). **Aanpassen** opent een
   invulvenster met titel, beschrijving, kleur (hex zoals `D65C1E`), voettekst en de
   tekst op de knop. **Plaats hier** zet het paneel in het kanaal waar je het commando gaf.
 * **Welkomstbericht** — dezelfde editor, met `{lid}` als ping van het nieuwe lid en een
@@ -143,6 +156,7 @@ Bot opnieuw starten en `/helikopter` staat erin.
 index.js                     startpunt: intents, commands en events laden
 lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
+lib/ticketTypes.js           de vier ticketsoorten en hun vragen
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
@@ -193,5 +207,5 @@ weg (dan bestaat die opkomst niet meer). Maak in dat geval een nieuwe opkomst aa
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.7.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.8.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
