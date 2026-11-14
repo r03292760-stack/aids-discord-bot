@@ -17,10 +17,7 @@ Geschreven in **Node.js** met **discord.js**, dus klaar voor je hosting met Node
 | `/lid-verwijderen @lid` | staf | Haalt een lid weer uit het ticket |
 | `/sluit` | staf of opener | Sluit het ticket, archiveert het gesprek en verwijdert het kanaal |
 | `/welkom-test` | beheer/staf | Laat zien hoe het welkomstbericht eruitziet |
-| `/beheer` | beheer | Paneel met knoppen om ticketpaneel en welkomstbericht aan te passen |
-| `/leden zoeken` | beheer | Leden zoeken met hun rollen |
-| `/leden rol` | beheer | Een rol geven of afnemen |
-| `/leden kick` | beheer | Iemand kicken (met bevestiging) |
+| `/beheer` | beheer | Paneel voor ticketpaneel, welkomstbericht en leden/rollenbeheer |
 | `/ping` | iedereen | Check of de bot wakker is |
 | `/info` | iedereen | Bot-info en alle commands |
 
@@ -114,14 +111,12 @@ Bot opnieuw starten en `/helikopter` staat erin.
 * **Welkomstbericht** — dezelfde editor, met `{lid}` als ping van het nieuwe lid en een
   veld voor de afbeelding-URL. **Stuur testbericht** stuurt een voorbeeld naar je
   welkomstkanaal.
-* **Leden** — uitleg plus de commando's hieronder.
-
-Ledenbeheer:
-
-* `/leden zoeken [naam]` — zoekt op (een deel van) de naam, of toont de nieuwste leden
-  met hun rollen en wanneer ze joined.
-* `/leden rol` — geeft of neemt een rol, met controle op rolhoogte.
-* `/leden kick` — vraagt eerst om bevestiging en kickt daarna.
+* **Leden** — een keuzelijst met de nieuwste leden. Zoek iemand op (een deel van) de
+  naam met **Zoeken**. Kies een lid en je ziet zijn rollen, wanneer hij op de server kwam
+  en hoe oud het account is.
+  Met de **roldropdown** vink je aan welke rollen hij moet hebben: aangevinkt is geven,
+  uitgevinkt is afnemen, en je ziet meteen wat er is aangepast. **Kicken** vraagt eerst
+  om bevestiging.
 
 Alles is alleen voor beheerders (Beheer server). De bot heeft **Rollen beheren** en
 **Leden kicken** nodig en moet hoger in de rollenlijst staan dan de rollen die je
@@ -138,7 +133,8 @@ lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/settings.js              data/settings.json: aanpasbare embeds via /beheer
 lib/adminPanel.js            beheerpaneel met knoppen, modals en previews
-lib/members.js               leden zoeken, rollen geven/afnemen, kicken
+lib/memberPanel.js           ledenpaneel: keuzelijsten, rollen aanpassen, kicken
+lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/embeds.js                alle embeds in de A.I.D.S.-stijl
 lib/config.js                .env uitlezen en ID's controleren
 commands/*.js                alle slash commands (automatisch geladen)
