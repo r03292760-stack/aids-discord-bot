@@ -2,6 +2,7 @@ const { Events, MessageFlags } = require('discord.js');
 const tickets = require('../lib/tickets');
 const admin = require('../lib/adminPanel');
 const memberPanel = require('../lib/memberPanel');
+const embedComposer = require('../lib/embedComposer');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -47,6 +48,7 @@ module.exports = {
 
       if (area === 'beheer') return await admin.handleButton(interaction, action, rest);
       if (area === 'memb') return await memberPanel.handleButton(interaction, action, rest);
+      if (area === 'paneel') return await embedComposer.handleButton(interaction, action);
     } catch (error) {
       console.error('Fout bij interactie:', error);
 
@@ -71,5 +73,8 @@ async function handleModal(interaction, area, action, rest) {
   }
   if (area === 'memb' && action === 'search') {
     return await memberPanel.handleModal(interaction);
+  }
+  if (area === 'paneel' && action === 'modal') {
+    return await embedComposer.handleModal(interaction);
   }
 }
