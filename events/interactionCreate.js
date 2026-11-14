@@ -3,6 +3,7 @@ const tickets = require('../lib/tickets');
 const admin = require('../lib/adminPanel');
 const memberPanel = require('../lib/memberPanel');
 const embedComposer = require('../lib/embedComposer');
+const opkomst = require('../lib/opkomst');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -34,6 +35,8 @@ module.exports = {
       }
 
       if (!interaction.isButton()) return;
+
+      if (area === 'opkomst') return await opkomst.handleButton(interaction, action, rest[0]);
 
       if (area === 'ticket') {
         switch (action) {
@@ -81,5 +84,8 @@ async function handleModal(interaction, area, action, rest) {
   }
   if (area === 'paneel' && action === 'modal') {
     return await embedComposer.handleModal(interaction, rest[0], rest[1]);
+  }
+  if (area === 'opkomst' && action === 'nieuw') {
+    return await opkomst.handleModal(interaction);
   }
 }
