@@ -34,6 +34,7 @@ module.exports = {
         if (area === 'ticket') return await tickets.chooseType(interaction);
         if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
         if (area === 'beheer') return await admin.handleSelect(interaction, action);
+        if (area === 'agenda') return await agenda.handleSelect(interaction, action, rest[0]);
         return;
       }
 
@@ -92,7 +93,7 @@ async function handleModal(interaction, area, action, rest) {
   if (area === 'opkomst' && (action === 'nieuw' || action === 'bewerk')) {
     return await opkomst.handleModal(interaction, action, rest[0]);
   }
-  if (area === 'agenda' && (action === 'maak' || action === 'form')) {
+  if (area === 'agenda' && (action === 'maak' || action === 'notitie')) {
     return await agenda.handleModal(interaction, action, rest[0]);
   }
   if (area === 'ticket' && action === 'form') {
