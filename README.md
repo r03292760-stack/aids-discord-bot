@@ -20,7 +20,7 @@ erbij horen:
 * **🛠️ Technisch probleem** — wat er misgaat, sinds wanneer en wat je al probeerde.
 
 Dat zijn de standaardsoorten; namen, omschrijvingen en vragen pas je zelf aan via
-`/paneel` → **Ticketsoorten**.
+`/paneel` → **Ticketsoorten**, en daar maak je ook nieuwe soorten bij.
 
 Het kanaal heet naar de soort (`unban-0007`, `klacht-0008`), de antwoorden staan in
 de embed bovenaan en komen ook in het transcript terecht, zodat de staf later terug
@@ -89,7 +89,7 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
 `/beheer` (beheerders) opent een privépaneel met vier knoppen:
 
 * **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met de knop die de
-  vier soorten aanbiedt). **Aanpassen** opent een
+  soorten aanbiedt). **Aanpassen** opent een
   invulvenster met titel, beschrijving, kleur (hex zoals `D65C1E`), voettekst en de
   tekst op de knop. **Plaats hier** zet het paneel in het kanaal waar je het commando gaf.
 * **Welkomstbericht** — dezelfde editor, met `{lid}` als ping van het nieuwe lid en een
@@ -144,12 +144,15 @@ tijdvak erbij. Aaneensluitende blokken worden één tijdvak (18:00-20:00 +
 20:00-22:00 wordt 18:00-22:00). Opnieuw invullen overschrijft je eigen invoer en
 laat je eerdere keuzes al aangevinkt staan; **🧹 Mijn invoer wissen** haalt je weer weg.
 
-**Ticketsoorten** opent een eigen scherm waarin je per soort de naam, emoji, omschrijving en
-de titel van het invulvenster aanpast, en de vragen beheert. Kies een vraag in de lijst om
-hem te wijzigen (tekst, **kort** of **lang**, verplicht of niet), gebruik **➕ Vraag
-toevoegen** of **🗑️ Laatste vraag weg** (maximaal 5, minstens 1), en zet een soort met
-**✅** of **⛔** aan of uit voor het ticketpaneel. Wat uit staat, komt niet in de keuzelijst
-en niet in de uitleg op het paneel. Alles wordt bewaard in `data/ticketTypes.json`.
+**Ticketsoorten** opent een eigen scherm met alle soorten. Met **➕ Nieuwe soort** maak
+je een compleet nieuwe soort: naam, emoji, omschrijving en de titel van het
+invulvenster. Die staat meteen op het paneel met één beginvraag, die je daarna
+aanpast. Kies een bestaande soort om hem te wijzigen: naam, emoji, omschrijving en
+titel, en per vraag de tekst, **kort** of **lang** en verplicht of niet. Gebruik
+**➕ Vraag toevoegen** of **🗑️ Laatste vraag weg** (maximaal 5 vragen, minstens 1), en
+zet een soort met **✅** of **⛔** aan of uit. Wat uit staat, komt niet in de keuzelijst
+en niet in de uitleg op het paneel. Er kunnen maximaal 20 soorten zijn, en alles wordt
+bewaard in `data/ticketTypes.json`.
 
 Na het sturen van een embed krijg je onder de bevestiging twee knoppen: **Bewerken**
 opent hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt
@@ -210,7 +213,7 @@ lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/ticketTypes.js           de ticketsoorten en hun vragen (keuzelijst en formulier)
 lib/ticketTypeStore.js       data/ticketTypes.json: de soorten en vragen zelf
-lib/ticketEditor.js          /paneel → Ticketsoorten: namen en vragen aanpassen
+lib/ticketEditor.js          /paneel → Ticketsoorten: soorten en vragen beheren
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
@@ -283,5 +286,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.15.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.16.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
