@@ -101,7 +101,7 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
 
 ## Beheer in Discord
 
-`/beheer` (beheerders) opent een privépaneel met vier knoppen:
+`/beheer` (beheerders) opent een privépaneel met vijf knoppen:
 
 * **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met per soort een knop).
   **Aanpassen** opent een
@@ -119,6 +119,11 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
 * **Toegang** — kies met de roldropdown welke rol `/paneel` mag gebruiken. Die rol kan
   daarmee het ticketpaneel in een kanaal zetten en embeds sturen. Zonder keuze geldt
   `STAFF_ROLE_ID`, en is die er ook niet, dan alleen beheerders.
+* **Instellingen** — de kanaal- en rol-ID's en de databasegegevens uit `.env`, met per
+  waarde waar hij vandaan komt. Wijzigingen gelden meteen (ook de database: de bot
+  verbindt opnieuw); alleen een nieuwe `GUILD_ID` werkt pas na een herstart, omdat de
+  commands dan opnieuw geplaatst worden. Waarden met **(hosting)** komen uit het
+  paneel van je hosting en winnen van `.env`; die kun je daar aanpassen.
 
 ### /paneel
 
@@ -252,6 +257,8 @@ lib/embeds.js                alle embeds in de A.I.D.S.-stijl
 lib/config.js                .env uitlezen en ID's controleren
 lib/db.js                    MySQL/MariaDB-opslag, met data/*.json als terugval
 lib/cleanup.js               opruimen bij het starten: dode tickets, opkomsten en agenda's
+lib/envFile.js               .env lezen en schrijven (voor /beheer → Instellingen)
+lib/storage.js               alle stores inlezen en na een .env-wijziging herverbinden
 lib/version.js               versie en commit (staat in /beheer)
 commands/*.js                alle slash commands (automatisch geladen)
 events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete
@@ -312,5 +319,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.19.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.20.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

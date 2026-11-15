@@ -88,6 +88,9 @@ async function handleModal(interaction, area, action, rest) {
   if (area === 'beheer' && action === 'modal') {
     return await admin.handleModal(interaction, rest[0]);
   }
+  if (area === 'beheer' && action === 'envmodal') {
+    return await admin.handleEnvModal(interaction, rest[0]);
+  }
   if (area === 'memb' && action === 'search') {
     return await memberPanel.handleModal(interaction);
   }

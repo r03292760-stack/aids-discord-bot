@@ -13,11 +13,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./lib/config');
 const db = require('./lib/db');
-const settings = require('./lib/settings');
-const ticketStore = require('./lib/ticketStore');
-const { store: ticketTypeStore } = require('./lib/ticketTypeStore');
-const opkomstStore = require('./lib/opkomstStore');
-const agendaStore = require('./lib/agendaStore');
+const storage = require('./lib/storage');
 
 const client = new Client({
   intents: [
@@ -67,13 +63,7 @@ if (!token) {
  */
 async function start() {
   await db.init();
-  await Promise.all([
-    settings.hydrate(),
-    ticketStore.hydrate(),
-    ticketTypeStore.hydrate(),
-    opkomstStore.hydrate(),
-    agendaStore.hydrate(),
-  ]);
+  await storage.hydrateAll();
 
   try {
     await client.login(token);

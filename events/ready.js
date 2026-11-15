@@ -1,5 +1,5 @@
 const { ActivityType, Events } = require('discord.js');
-const { guildId } = require('../lib/config');
+const config = require('../lib/config');
 const cleanup = require('../lib/cleanup');
 
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
   async execute(client) {
     console.log(`Ingelogd als ${client.user.tag} (ID: ${client.user.id})`);
 
+    const guildId = config.guildId;
     const commands = [...client.commands.values()].map((command) => command.data.toJSON());
 
     try {

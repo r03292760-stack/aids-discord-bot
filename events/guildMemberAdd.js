@@ -1,5 +1,5 @@
 const { ChannelType, Events, PermissionFlagsBits } = require('discord.js');
-const { welcomeChannelId, autoRoleId } = require('../lib/config');
+const config = require('../lib/config');
 const { welcomeEmbed } = require('../lib/embeds');
 
 /**
@@ -7,6 +7,7 @@ const { welcomeEmbed } = require('../lib/embeds');
  * Gaat nooit stuk op rechten: dan staat er alleen een waarschuwing in de log.
  */
 async function giveAutoRole(member) {
+  const autoRoleId = config.autoRoleId;
   if (!autoRoleId) return false;
 
   try {
@@ -46,6 +47,8 @@ module.exports = {
 
   async execute(member) {
     if (member.user.bot) return;
+
+    const welcomeChannelId = config.welcomeChannelId;
 
     // Eerst de rol, zodat een ontbrekend welkomstkanaal dat niet tegenhoudt.
     await giveAutoRole(member);
