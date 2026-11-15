@@ -214,7 +214,7 @@ miste rechten om de leden op te halen.
 weg (dan bestaat die opkomst niet meer). Maak in dat geval een nieuwe opkomst aan.
 
 **De ping bij de opkomst komt niet aan.** De bot moet de rechten **Rollen vermelden**
-en **Berichten sturen** hebben in dat kanaal; anders plaats hij de melding zonder ping.
+en **Berichten sturen** hebben in dat kanaal; anders plaatst hij de melding zonder ping.
 
 **"Geen DISCORD_TOKEN gevonden".** De variabele staat niet in de omgeving of
 `.env` ontbreekt.
