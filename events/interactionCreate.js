@@ -29,6 +29,7 @@ module.exports = {
       }
 
       if (interaction.isStringSelectMenu() || interaction.isRoleSelectMenu()) {
+        if (area === 'opkomst') return await opkomst.handleSelect(interaction, action, rest[0]);
         if (area === 'ticket') return await tickets.chooseType(interaction);
         if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
         if (area === 'beheer') return await admin.handleSelect(interaction, action);
@@ -86,8 +87,8 @@ async function handleModal(interaction, area, action, rest) {
   if (area === 'paneel' && action === 'modal') {
     return await embedComposer.handleModal(interaction, rest[0], rest[1]);
   }
-  if (area === 'opkomst' && action === 'nieuw') {
-    return await opkomst.handleModal(interaction);
+  if (area === 'opkomst' && (action === 'nieuw' || action === 'bewerk')) {
+    return await opkomst.handleModal(interaction, action, rest[0]);
   }
   if (area === 'ticket' && action === 'form') {
     return await tickets.createFromForm(interaction, rest[0]);
