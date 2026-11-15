@@ -12,6 +12,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./lib/config');
+const db = require('./lib/db');
+const settings = require('./lib/settings');
+const ticketStore = require('./lib/ticketStore');
+const { store: ticketTypeStore } = require('./lib/ticketTypeStore');
+const opkomstStore = require('./lib/opkomstStore');
+const agendaStore = require('./lib/agendaStore');
 
 const client = new Client({
   intents: [
@@ -55,7 +61,35 @@ if (!token) {
   process.exit(1);
 }
 
-client.login(token).catch((error) => {
-  console.error('Inloggen mislukt:', error.message);
-  process.exit(1);
-});
+/**
+ * Leest eerst de database (als die is ingesteld) en logt daarna in. Zo staat
+ * alles wat eerder bewaard is klaar voordat de eerste interactie binnenkomt.
+ */
+async function start() {
+  await db.init();
+  await Promise.all([
+    settings.hydrate(),
+    ticketStore.hydrate(),
+    ticketTypeStore.hydrate(),
+    opkomstStore.hydrate(),
+    agendaStore.hydrate(),
+  ]);
+
+  try {
+    await client.login(token);
+  } catch (error) {
+    console.error('Inloggen mislukt:', error.message);
+    process.exit(1);
+  }
+}
+
+start();
+
+// Bij stoppen nog de laatste schrijfacties naar de database laten gaan.
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, async () => {
+    await db.close();
+    client.destroy();
+    process.exit(0);
+  });
+}

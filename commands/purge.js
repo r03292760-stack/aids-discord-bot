@@ -1,5 +1,6 @@
 const { MessageFlags, SlashCommandBuilder } = require('discord.js');
 const { blockedReason, purge: purgeChannel } = require('../lib/purge');
+const { canPaneel, deniedMessage } = require('../lib/permissions');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -25,6 +26,14 @@ module.exports = {
     if (!interaction.guild) {
       return interaction.reply({
         content: 'Dit werkt alleen binnen de server.',
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+
+    // Zelfde rol als /paneel: de rol uit /beheer → Toegang, anders STAFF_ROLE_ID.
+    if (!canPaneel(interaction)) {
+      return interaction.reply({
+        content: deniedMessage('purge'),
         flags: MessageFlags.Ephemeral,
       });
     }

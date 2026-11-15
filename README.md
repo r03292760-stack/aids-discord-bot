@@ -6,7 +6,7 @@ Bot voor **Airborne Insertion Direct Seizure**. Drie commands, de rest zit in kn
 |---|---|---|
 | `/beheer` | beheerders | Paneel om het ticketpaneel en welkomstbericht te bewerken, leden en rollen te beheren en de rol voor `/paneel` te kiezen |
 | `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel, stuurt een embed (naar een kanaal naar keuze, daarna te bewerken of verwijderen), of maakt een opkomst of een agenda voor de groep |
-| `/purge` | iedereen | Verwijdert tot 100 berichten in het kanaal, eventueel alleen die van één lid |
+| `/purge` | de rol van `/paneel` | Verwijdert tot 100 berichten in het kanaal, eventueel alleen die van één lid |
 
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 Ledenaanmeldingen lopen via de knoppen op het paneel.
@@ -57,9 +57,24 @@ door en staat de reden in de console.
    | `WELCOME_CHANNEL_ID` | nee | Kanaal voor het welkomstbericht |
    | `WELCOME_IMAGE_URL` | nee | Link naar de banner in dat bericht |
    | `AUTO_ROLE_ID` | nee | Rol die nieuwe leden automatisch krijgen (standaard `1459910402799435909`) |
+   | `DB_HOST` | nee | Adres van je MySQL/MariaDB-database |
+   | `DB_PORT` | nee | Poort van de database (standaard 3306) |
+   | `DB_NAME` | nee | Naam van de database |
+   | `DB_USER` | nee | Gebruikersnaam van de database |
+   | `DB_PASSWORD` | nee | Wachtwoord van de database |
 
    \* Zonder stafrol kunnen alleen beheerders tickets zien en beheren.
    Zonder logkanaal wordt er geen transcript bewaard.
+
+   Zet je `DB_HOST`, `DB_USER` en `DB_NAME` (en `DB_PORT`/`DB_PASSWORD` als je host
+dat vraagt), dan maakt de bot bij de eerste start zelf de tabellen aan:
+`tickets`, `opkomst` met `opkomst_answers`, `agenda` met `agenda_entries`, plus
+`bot_state` voor de instellingen en ticketsoorten en `bot_counters` voor de
+nummering. Wat er nog in `data/*.json` staat, zet hij dan eenmalig over. Bij het
+starten ruimt de bot ook dode rijen op: tickets waarvan het kanaal is verwijderd
+en opkomsten of agenda's waarvan kanaal of bericht niet meer bestaat. Is de
+database even niet bereikbaar, dan start de bot door met de bestanden uit `data/`
+en zegt hij dat in de console.
 
 ### Lokaal draaien
 
@@ -69,7 +84,7 @@ cp .env.example .env     # daarna .env invullen
 npm start
 ```
 
-Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aan.
+Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start` start de bot.
 
 ### In Discord eenmalig klaarzetten
 
@@ -172,7 +187,9 @@ rollenlijst staan dan de rollen die je uitgeeft. Keuzes en embeds worden bewaard
 
 ### /purge
 
-Iedereen kan met `/purge` opruimen in het kanaal waar hij het typt:
+`/purge` is voor dezelfde rol als `/paneel`: de rol die je bij **/beheer → Toegang**
+kiest, anders `STAFF_ROLE_ID`, en is die er ook niet, dan beheerders. Die rol kan
+opruimen in het kanaal waar hij het typt:
 
 * `/purge aantal:25` — de laatste 25 berichten weg.
 * `/purge aantal:100 gebruiker:@iemand` — alleen de berichten van dat lid, uit de
@@ -181,9 +198,8 @@ Iedereen kan met `/purge` opruimen in het kanaal waar hij het typt:
 Je krijgt een privébevestiging met hoeveel er weg zijn. Discord staat maximaal 100
 berichten per keer toe en weigert alles ouder dan 14 dagen; de bot zegt het als er
 iets blijft staan. In threads werkt het niet. De bot heeft **Berichten beheren** en
-**Kanaalgeschiedenis lezen** nodig in dat kanaal. Wil je het toch liever alleen voor
-de staf? Zet in `commands/purge.js` bij `data` een `.setDefaultMemberPermissions(8192)`
-erbij; dan ziet alleen wie berichten mag beheren het command.
+**Kanaalgeschiedenis lezen** nodig in dat kanaal. Leden zonder de paneelrol krijgen
+een privébericht dat ze het niet mogen.
 
 ---
 
@@ -234,6 +250,8 @@ lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/permissions.js           wie /beheer en /paneel mogen gebruiken
 lib/embeds.js                alle embeds in de A.I.D.S.-stijl
 lib/config.js                .env uitlezen en ID's controleren
+lib/db.js                    MySQL/MariaDB-opslag, met data/*.json als terugval
+lib/cleanup.js               opruimen bij het starten: dode tickets, opkomsten en agenda's
 lib/version.js               versie en commit (staat in /beheer)
 commands/*.js                alle slash commands (automatisch geladen)
 events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete
@@ -243,9 +261,10 @@ data/agenda.json             wordt automatisch gemaakt
 data/ticketTypes.json        wordt automatisch gemaakt
 ```
 
-`data/` mag je niet weggooien als er tickets of opkomsten open staan of als je je
-embeds hebt aangepast. Zet je hosting geen bestanden vast? Dan is het verstandig om
-de data in een database te zetten; vraag dat na bij je host.
+Met een database (zie **Op je hosting zetten**) staan tickets, opkomsten en de
+agenda in hun eigen tabellen en zijn de bestanden in `data/` alleen nog terugval:
+handig lokaal, en als de database even niet bereikbaar is. Zonder database mag je `data/` niet weggooien als
+er tickets of opkomsten open staan of als je je embeds hebt aangepast.
 
 ---
 
@@ -293,5 +312,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.18.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.19.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

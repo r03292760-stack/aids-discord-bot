@@ -1,5 +1,6 @@
 const { ActivityType, Events } = require('discord.js');
 const { guildId } = require('../lib/config');
+const cleanup = require('../lib/cleanup');
 
 module.exports = {
   name: Events.ClientReady,
@@ -28,6 +29,14 @@ module.exports = {
       }
     } catch (error) {
       console.error('Synchroniseren van commands mislukt:', error.message);
+    }
+
+    // Eenmalig opruimen: tickets van verwijderde kanalen en opkomsten of
+    // agenda's waarvan het bericht weg is.
+    try {
+      await cleanup.runCleanup(client);
+    } catch (error) {
+      console.error('Opruimen van oude rijen mislukt:', error.message);
     }
 
     client.user.setActivity('de rotors | /ticketpanel', { type: ActivityType.Watching });
