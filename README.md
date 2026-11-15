@@ -149,8 +149,10 @@ je een compleet nieuwe soort: naam, emoji, omschrijving en de titel van het
 invulvenster. Die staat meteen op het paneel met één beginvraag, die je daarna
 aanpast. Kies een bestaande soort om hem te wijzigen: naam, emoji, omschrijving en
 titel, en per vraag de tekst, **kort** of **lang** en verplicht of niet. Gebruik
-**➕ Vraag toevoegen** of **🗑️ Laatste vraag weg** (maximaal 5 vragen, minstens 1), en
-zet een soort met **✅** of **⛔** aan of uit. Wat uit staat, komt niet in de keuzelijst
+**➕ Vraag toevoegen** of **🗑️ Laatste vraag weg** (maximaal 5 vragen, minstens 1). Met de
+lijst **Kies een vraag om te verplaatsen** en de knoppen **⬆️ Omhoog** en **⬇️ Omlaag** zet je
+de vragen in de volgorde die je wilt; die volgorde is precies de volgorde in het invulvenster.
+Zet een soort met **✅** of **⛔** aan of uit. Wat uit staat, komt niet in de keuzelijst
 en niet in de uitleg op het paneel. Er kunnen maximaal 20 soorten zijn, en alles wordt
 bewaard in `data/ticketTypes.json`.
 
@@ -286,5 +288,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.16.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.17.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
