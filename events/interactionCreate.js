@@ -92,7 +92,10 @@ async function handleModal(interaction, area, action, rest) {
   if (area === 'paneel' && action === 'modal') {
     return await embedComposer.handleModal(interaction, rest[0], rest[1]);
   }
-  if (area === 'paneel' && (action === 'typeinfo' || action === 'vraagplus' || action === 'vraag')) {
+  if (
+    area === 'paneel' &&
+    (action === 'nieuwtype' || action === 'typeinfo' || action === 'vraagplus' || action === 'vraag')
+  ) {
     return await ticketEditor.handleModal(interaction, action, rest);
   }
   if (area === 'opkomst' && (action === 'nieuw' || action === 'bewerk')) {
