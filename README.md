@@ -19,6 +19,9 @@ erbij horen:
 * **🔓 Unban-aanvraag** — je naam, Steam-ID of spelersnaam, en waarom je terug mag.
 * **🛠️ Technisch probleem** — wat er misgaat, sinds wanneer en wat je al probeerde.
 
+Dat zijn de standaardsoorten; namen, omschrijvingen en vragen pas je zelf aan via
+`/paneel` → **Ticketsoorten**.
+
 Het kanaal heet naar de soort (`unban-0007`, `klacht-0008`), de antwoorden staan in
 de embed bovenaan en komen ook in het transcript terecht, zodat de staf later terug
 kan lezen wat er gevraagd en geantwoord is.
@@ -141,6 +144,13 @@ tijdvak erbij. Aaneensluitende blokken worden één tijdvak (18:00-20:00 +
 20:00-22:00 wordt 18:00-22:00). Opnieuw invullen overschrijft je eigen invoer en
 laat je eerdere keuzes al aangevinkt staan; **🧹 Mijn invoer wissen** haalt je weer weg.
 
+**Ticketsoorten** opent een eigen scherm waarin je per soort de naam, emoji, omschrijving en
+de titel van het invulvenster aanpast, en de vragen beheert. Kies een vraag in de lijst om
+hem te wijzigen (tekst, **kort** of **lang**, verplicht of niet), gebruik **➕ Vraag
+toevoegen** of **🗑️ Laatste vraag weg** (maximaal 5, minstens 1), en zet een soort met
+**✅** of **⛔** aan of uit voor het ticketpaneel. Wat uit staat, komt niet in de keuzelijst
+en niet in de uitleg op het paneel. Alles wordt bewaard in `data/ticketTypes.json`.
+
 Na het sturen van een embed krijg je onder de bevestiging twee knoppen: **Bewerken**
 opent hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt
 eerst om bevestiging. Beide werken alleen voor jou (de bevestiging is privé), en ook
@@ -198,7 +208,9 @@ Bot opnieuw starten en `/helikopter` staat erin.
 index.js                     startpunt: intents, commands en events laden
 lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
-lib/ticketTypes.js           de vier ticketsoorten en hun vragen
+lib/ticketTypes.js           de ticketsoorten en hun vragen (keuzelijst en formulier)
+lib/ticketTypeStore.js       data/ticketTypes.json: de soorten en vragen zelf
+lib/ticketEditor.js          /paneel → Ticketsoorten: namen en vragen aanpassen
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
@@ -218,6 +230,7 @@ events/*.js                  ready, interactionCreate, guildMemberAdd, channelDe
 data/tickets.json            wordt automatisch gemaakt
 data/opkomst.json            wordt automatisch gemaakt
 data/agenda.json             wordt automatisch gemaakt
+data/ticketTypes.json        wordt automatisch gemaakt
 ```
 
 `data/` mag je niet weggooien als er tickets of opkomsten open staan of als je je
@@ -256,6 +269,9 @@ en **Berichten sturen** hebben in dat kanaal; anders plaatst hij de melding zond
 niet hoog genoeg in de rollenlijst, of de rol uit `AUTO_ROLE_ID` bestaat niet meer.
 In de console staat welke van de drie het is.
 
+**Er staat geen soort op het ticketpaneel.** Zet er een aan via **/paneel → Ticketsoorten**.
+Zonder soorten weigert de bot het paneel te plaatsen, anders zou de knop niets doen.
+
 **/purge verwijdert niets.** De bot mist **Berichten beheren** of
 **Kanaalgeschiedenis lezen**, of de berichten zijn ouder dan 14 dagen — die kan
 Discord niet in bulk verwijderen.
@@ -267,5 +283,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.14.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.15.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
