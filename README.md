@@ -106,18 +106,28 @@ De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
 * **Doelkanaal** — de dropdown onder de knoppen. Kies daar een tekstkanaal en het
   invulvenster opent meteen voor dát kanaal, zonder eerst zelf naar dat kanaal te
   gaan. De bot moet er berichten en embeds mogen plaatsen.
-* **Opkomst** — vul de sessienaam, wanneer het is, een toelichting (kaart, modset,
-  slot) en eventueel een minimum aantal spelers in. De bot plaatst een bericht met
+* **Opkomst** — eerst kies je met een **rollen-dropdown** welke rollen een ping
+  krijgen (max 5, mag ook leeg blijven), daarna vul je de sessienaam, wanneer het
+  is, een toelichting (kaart, modset, slot) en eventueel een minimum aantal spelers
+  in. De bot plaatst het bericht met de gekozen rollen erin getagd, en met
   **✅ Aanwezig**, **❔ Misschien** en **❌ Afwezig**; iedereen op de server kan
   klikken, en de lijsten en tellers werken meteen bij. Nog eens op dezelfde knop
-  klikken meldt je weer af. Met **🔒 Opkomst sluiten** (voor de paneelrol) zet je
-  aanmeldingen stop. Haalt de groep het minimum, dan wordt de embed groen; anders
-  staat er hoeveel spelers er nog nodig zijn.
+  klikken meldt je weer af. Haalt de groep het minimum, dan wordt de embed groen;
+  anders staat er hoeveel spelers er nog nodig zijn.
 
-Na het sturen krijg je onder de bevestiging twee knoppen: **Bewerken** opent
-hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt eerst om
-bevestiging. Beide werken alleen voor jou (de bevestiging is privé), en ook na een
-herstart — de knoppen onthouden om welk bericht het gaat.
+Op het opkomstbericht zelf staan nog twee dingen voor de paneelrol:
+
+* **✏️ Aanpassen** — titel, wanneer, toelichting en minimum wijzigen. De embed
+  wordt bijgewerkt en de aanmeldingen blijven staan.
+* **Rollen-dropdown** — kies rollen en de bot post een ping: "nog spelers nodig
+  voor *sessie*", met alleen die rollen getagd. Handig een paar uur vooraf.
+
+Met **🔒 Sluiten** zet je aanmeldingen stop; de dropdown gaat dan op grijs.
+
+Na het sturen van een embed krijg je onder de bevestiging twee knoppen: **Bewerken**
+opent hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt
+eerst om bevestiging. Beide werken alleen voor jou (de bevestiging is privé), en ook
+na een herstart — de knoppen onthouden om welk bericht het gaat.
 
 De bot heeft **Rollen beheren** en **Leden kicken** nodig en moet hoger in de
 rollenlijst staan dan de rollen die je uitgeeft. Keuzes en embeds worden bewaard in
@@ -160,7 +170,7 @@ lib/ticketTypes.js           de vier ticketsoorten en hun vragen
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
-lib/opkomst.js               opkomst: aanmeldbericht met knoppen en quorum
+lib/opkomst.js               opkomst: aanmeldbericht, aanpassen en rollen pingen
 lib/opkomstStore.js          data/opkomst.json: wie doet mee aan welke sessie
 lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
@@ -203,9 +213,12 @@ miste rechten om de leden op te halen.
 **De opkomstknoppen reageren niet.** Meestal is de bot offline of is `data/opkomst.json`
 weg (dan bestaat die opkomst niet meer). Maak in dat geval een nieuwe opkomst aan.
 
+**De ping bij de opkomst komt niet aan.** De bot moet de rechten **Rollen vermelden**
+en **Berichten sturen** hebben in dat kanaal; anders plaats hij de melding zonder ping.
+
 **"Geen DISCORD_TOKEN gevonden".** De variabele staat niet in de omgeving of
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.8.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.9.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
