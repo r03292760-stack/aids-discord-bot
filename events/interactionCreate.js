@@ -5,6 +5,7 @@ const memberPanel = require('../lib/memberPanel');
 const embedComposer = require('../lib/embedComposer');
 const opkomst = require('../lib/opkomst');
 const agenda = require('../lib/agenda');
+const ticketEditor = require('../lib/ticketEditor');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -25,7 +26,7 @@ module.exports = {
       if (interaction.isModalSubmit()) return await handleModal(interaction, area, action, rest);
 
       if (interaction.isChannelSelectMenu()) {
-        if (area === 'paneel') return await embedComposer.handleSelect(interaction);
+        if (area === 'paneel') return await embedComposer.handleSelect(interaction, action, rest);
         return;
       }
 
@@ -35,6 +36,7 @@ module.exports = {
         if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
         if (area === 'beheer') return await admin.handleSelect(interaction, action);
         if (area === 'agenda') return await agenda.handleSelect(interaction, action, rest[0]);
+        if (area === 'paneel') return await embedComposer.handleSelect(interaction, action, rest);
         return;
       }
 
@@ -89,6 +91,9 @@ async function handleModal(interaction, area, action, rest) {
   }
   if (area === 'paneel' && action === 'modal') {
     return await embedComposer.handleModal(interaction, rest[0], rest[1]);
+  }
+  if (area === 'paneel' && (action === 'typeinfo' || action === 'vraagplus' || action === 'vraag')) {
+    return await ticketEditor.handleModal(interaction, action, rest);
   }
   if (area === 'opkomst' && (action === 'nieuw' || action === 'bewerk')) {
     return await opkomst.handleModal(interaction, action, rest[0]);
