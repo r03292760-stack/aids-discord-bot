@@ -9,17 +9,17 @@ Bot voor **Airborne Insertion Direct Seizure**. Drie commands, de rest zit in kn
 | `/purge` | iedereen | Verwijdert tot 100 berichten in het kanaal, eventueel alleen die van één lid |
 
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
-Ledenaanmeldingen lopen via de knop **Ticket aanmaken** op het paneel.
+Ledenaanmeldingen lopen via de knoppen op het paneel.
 
-Die knop vraagt eerst **waarvoor** je komt. Je krijgt daarna alleen de vragen die
-erbij horen:
+Elke soort heeft zijn eigen knop op het paneel, met een eigen tekst en kleur. Je
+krijgt meteen alleen de vragen die erbij horen:
 
 * **🎯 Sollicitatie** — je Arma-naam, ervaring met mods en rollen, wanneer je speelt.
 * **⚠️ Klacht over een lid** — over wie, wat er gebeurde, wanneer en welk bewijs er is.
 * **🔓 Unban-aanvraag** — je naam, Steam-ID of spelersnaam, en waarom je terug mag.
 * **🛠️ Technisch probleem** — wat er misgaat, sinds wanneer en wat je al probeerde.
 
-Dat zijn de standaardsoorten; namen, omschrijvingen en vragen pas je zelf aan via
+Dat zijn de standaardsoorten; namen, omschrijvingen, knoppen en vragen pas je zelf aan via
 `/paneel` → **Ticketsoorten**, en daar maak je ook nieuwe soorten bij.
 
 Het kanaal heet naar de soort (`unban-0007`, `klacht-0008`), de antwoorden staan in
@@ -88,8 +88,8 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
 
 `/beheer` (beheerders) opent een privépaneel met vier knoppen:
 
-* **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met de knop die de
-  soorten aanbiedt). **Aanpassen** opent een
+* **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met per soort een knop).
+  **Aanpassen** opent een
   invulvenster met titel, beschrijving, kleur (hex zoals `D65C1E`), voettekst en de
   tekst op de knop. **Plaats hier** zet het paneel in het kanaal waar je het commando gaf.
 * **Welkomstbericht** — dezelfde editor, met `{lid}` als ping van het nieuwe lid en een
@@ -109,7 +109,8 @@ Windows: dubbelklik `start.bat` — die installeert alles en maakt een `.env` aa
 
 De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
 
-* **Ticketpaneel plaatsen** — zet het ticketbericht met de aanmaakknop in dat kanaal.
+* **Ticketpaneel plaatsen** — zet het ticketbericht met per soort een eigen knop in dat
+  kanaal. Die knop heeft de tekst en de kleur die je bij **Ticketsoorten** instelt.
 * **Embed sturen** — vul titel, tekst, kleur (hex), afbeelding-URL en voettekst in. De
   embed komt in het kanaal waar je `/paneel` typte. Kleur en afbeelding mogen leeg;
   zonder kleur wordt het A.I.D.S.-oranje gebruikt.
@@ -152,8 +153,12 @@ titel, en per vraag de tekst, **kort** of **lang** en verplicht of niet. Gebruik
 **➕ Vraag toevoegen** of **🗑️ Laatste vraag weg** (maximaal 5 vragen, minstens 1). Met de
 lijst **Kies een vraag om te verplaatsen** en de knoppen **⬆️ Omhoog** en **⬇️ Omlaag** zet je
 de vragen in de volgorde die je wilt; die volgorde is precies de volgorde in het invulvenster.
+Met **🎛️ Knop** stel je in hoe die soort op het paneel staat: de **tekst op de knop**
+(leeg laten betekent: de naam van de soort) en de **kleur** — groen, blauw, rood of
+grijs. Elke soort heeft zijn eigen knop, dus leden klikken meteen de juiste aan; vijf
+knoppen per rij, dus er passen er twintig op het paneel.
 Zet een soort met **✅** of **⛔** aan of uit. Wat uit staat, komt niet in de keuzelijst
-en niet in de uitleg op het paneel. Er kunnen maximaal 20 soorten zijn, en alles wordt
+en niet op het paneel. Er kunnen maximaal 20 soorten zijn, en alles wordt
 bewaard in `data/ticketTypes.json`.
 
 Na het sturen van een embed krijg je onder de bevestiging twee knoppen: **Bewerken**
@@ -214,8 +219,8 @@ index.js                     startpunt: intents, commands en events laden
 lib/tickets.js               ticketlogica (kanaal, claimen, sluiten, transcript)
 lib/ticketStore.js           data/tickets.json: open tickets en nummering
 lib/ticketTypes.js           de ticketsoorten en hun vragen (keuzelijst en formulier)
-lib/ticketTypeStore.js       data/ticketTypes.json: de soorten en vragen zelf
-lib/ticketEditor.js          /paneel → Ticketsoorten: soorten en vragen beheren
+lib/ticketTypeStore.js       data/ticketTypes.json: de soorten, vragen, knoptekst en kleur
+lib/ticketEditor.js          /paneel → Ticketsoorten: soorten, knoppen en vragen beheren
 lib/settings.js              data/settings.json: embeds en de rol voor /paneel
 lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
@@ -274,8 +279,8 @@ en **Berichten sturen** hebben in dat kanaal; anders plaatst hij de melding zond
 niet hoog genoeg in de rollenlijst, of de rol uit `AUTO_ROLE_ID` bestaat niet meer.
 In de console staat welke van de drie het is.
 
-**Er staat geen soort op het ticketpaneel.** Zet er een aan via **/paneel → Ticketsoorten**.
-Zonder soorten weigert de bot het paneel te plaatsen, anders zou de knop niets doen.
+**Er staat geen knop op het ticketpaneel.** Zet een soort aan via **/paneel → Ticketsoorten**.
+Zonder soorten weigert de bot het paneel te plaatsen, anders zouden er geen knoppen zijn.
 
 **/purge verwijdert niets.** De bot mist **Berichten beheren** of
 **Kanaalgeschiedenis lezen**, of de berichten zijn ouder dan 14 dagen — die kan
@@ -288,5 +293,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.17.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.18.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
