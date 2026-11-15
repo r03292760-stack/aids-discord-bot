@@ -126,11 +126,13 @@ Met **🔒 Sluiten** zet je aanmeldingen stop; de dropdown gaat dan op grijs.
 
 **Agenda** zet één gedeeld bericht neer waarin iedereen zelf invult wanneer hij kan.
 Je geeft een titel en eventueel uitleg (welke week of operatie). Leden klikken op
-**📝 Beschikbaarheid doorgeven**, vullen dagen in (`ma, wo, za`, `weekend`,
-`elke dag`) en een tijdvak (`20:00-23:00`), plus een opmerking als dat handig is. De
-embed zet alles per weekdag neer met de namen en tijden erbij, zodat je in één
-oogopslag ziet wanneer de groep kan. Opnieuw invullen overschrijft je eigen invoer;
-**🧹 Mijn invoer wissen** haalt je weer weg.
+**📝 Beschikbaarheid doorgeven** en krijgen een privéscherm: **dagen** aanklikken
+(maandag t/m zondag) en **tijdsblokken van 2 uur** (14:00-16:00 t/m 00:00-02:00).
+Met **📝 Opmerking** zet je er iets bij als "na 22:00 liever niet", met
+**✅ Opslaan** staat het meteen in de embed — per weekdag, met ieders naam en
+tijdvak erbij. Aaneensluitende blokken worden één tijdvak (18:00-20:00 +
+20:00-22:00 wordt 18:00-22:00). Opnieuw invullen overschrijft je eigen invoer en
+laat je eerdere keuzes al aangevinkt staan; **🧹 Mijn invoer wissen** haalt je weer weg.
 
 Na het sturen van een embed krijg je onder de bevestiging twee knoppen: **Bewerken**
 opent hetzelfde invulvenster met de huidige tekst er al in, **Verwijderen** vraagt
@@ -180,7 +182,7 @@ lib/adminPanel.js            beheerpaneel: embeds, toegang, previews
 lib/embedComposer.js         het /paneel-menu: embed maken, bewerken en verwijderen
 lib/opkomst.js               opkomst: aanmeldbericht, aanpassen en rollen pingen
 lib/opkomstStore.js          data/opkomst.json: wie doet mee aan welke sessie
-lib/agenda.js                agenda: beschikbaarheid per weekdag
+lib/agenda.js                agenda: dagen en tijdsblokken van 2 uur per lid
 lib/agendaStore.js           data/agenda.json: wie kan wanneer
 lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
@@ -234,5 +236,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.10.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.11.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
