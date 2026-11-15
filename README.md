@@ -1,11 +1,12 @@
 # A.I.D.S. Discord-bot 🛩️ (Node.js)
 
-Bot voor **Airborne Insertion Direct Seizure**. Twee commands, de rest zit in knoppen:
+Bot voor **Airborne Insertion Direct Seizure**. Drie commands, de rest zit in knoppen:
 
 | Command | Wie | Wat het doet |
 |---|---|---|
 | `/beheer` | beheerders | Paneel om het ticketpaneel en welkomstbericht te bewerken, leden en rollen te beheren en de rol voor `/paneel` te kiezen |
 | `/paneel` | de rol die je in `/beheer` instelt | Plaatst het ticketpaneel, stuurt een embed (naar een kanaal naar keuze, daarna te bewerken of verwijderen), of maakt een opkomst of een agenda voor de groep |
+| `/purge` | iedereen | Verwijdert tot 100 berichten in het kanaal, eventueel alleen die van één lid |
 
 In een ticket staan de knoppen **🙋 Claimen** en **🔒 Sluiten** (met bevestiging).
 Ledenaanmeldingen lopen via de knop **Ticket aanmaken** op het paneel.
@@ -143,6 +144,21 @@ De bot heeft **Rollen beheren** en **Leden kicken** nodig en moet hoger in de
 rollenlijst staan dan de rollen die je uitgeeft. Keuzes en embeds worden bewaard in
 `data/settings.json` en blijven dus na een herstart.
 
+### /purge
+
+Iedereen kan met `/purge` opruimen in het kanaal waar hij het typt:
+
+* `/purge aantal:25` — de laatste 25 berichten weg.
+* `/purge aantal:100 gebruiker:@iemand` — alleen de berichten van dat lid, uit de
+  laatste 100 berichten van het kanaal.
+
+Je krijgt een privébevestiging met hoeveel er weg zijn. Discord staat maximaal 100
+berichten per keer toe en weigert alles ouder dan 14 dagen; de bot zegt het als er
+iets blijft staan. In threads werkt het niet. De bot heeft **Berichten beheren** en
+**Kanaalgeschiedenis lezen** nodig in dat kanaal. Wil je het toch liever alleen voor
+de staf? Zet in `commands/purge.js` bij `data` een `.setDefaultMemberPermissions(8192)`
+erbij; dan ziet alleen wie berichten mag beheren het command.
+
 ---
 
 ## Een eigen `/`-command toevoegen
@@ -184,6 +200,7 @@ lib/opkomst.js               opkomst: aanmeldbericht, aanpassen en rollen pingen
 lib/opkomstStore.js          data/opkomst.json: wie doet mee aan welke sessie
 lib/agenda.js                agenda: dagen en tijdsblokken van 2 uur per lid
 lib/agendaStore.js           data/agenda.json: wie kan wanneer
+lib/purge.js                 /purge: berichten in bulk verwijderen
 lib/memberPanel.js           ledenpaneel: bladeren, keuzelijsten, kicken
 lib/members.js               hulpjes: leden zoeken, rolhoogte, rolwijzigingen
 lib/permissions.js           wie /beheer en /paneel mogen gebruiken
@@ -229,6 +246,10 @@ weg (dan bestaat die opkomst niet meer). Maak in dat geval een nieuwe opkomst aa
 **De ping bij de opkomst komt niet aan.** De bot moet de rechten **Rollen vermelden**
 en **Berichten sturen** hebben in dat kanaal; anders plaatst hij de melding zonder ping.
 
+**/purge verwijdert niets.** De bot mist **Berichten beheren** of
+**Kanaalgeschiedenis lezen**, of de berichten zijn ouder dan 14 dagen — die kan
+Discord niet in bulk verwijderen.
+
 **De agenda reageert niet meer.** Dan is `data/agenda.json` weg of de bot is herstart
 zonder die map. Plaats in dat geval een nieuwe agenda.
 
@@ -236,5 +257,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.12.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.13.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
