@@ -127,7 +127,7 @@ Met **🔒 Sluiten** zet je aanmeldingen stop; de dropdown gaat dan op grijs.
 **Agenda** zet één gedeeld bericht neer waarin iedereen zelf invult wanneer hij kan.
 Je geeft een titel en eventueel uitleg (welke week of operatie). Leden klikken op
 **📝 Beschikbaarheid doorgeven** en krijgen een privéscherm: **dagen** aanklikken
-(maandag t/m zondag) en **tijdsblokken van 2 uur** (14:00-16:00 t/m 00:00-02:00).
+(maandag t/m zondag) en **tijdsblokken van 2 uur** (10:00-12:00 t/m 00:00-02:00).
 Met **📝 Opmerking** zet je er iets bij als "na 22:00 liever niet", met
 **✅ Opslaan** staat het meteen in de embed — per weekdag, met ieders naam en
 tijdvak erbij. Aaneensluitende blokken worden één tijdvak (18:00-20:00 +
@@ -236,5 +236,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.11.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.12.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
