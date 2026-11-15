@@ -49,6 +49,8 @@ module.exports = {
         switch (action) {
           case 'open':
             return await tickets.openTypes(interaction);
+          case 'soort':
+            return await tickets.openType(interaction, rest[0]);
           case 'claim':
             return await tickets.claimTicket(interaction);
           case 'close':
@@ -94,7 +96,7 @@ async function handleModal(interaction, area, action, rest) {
   }
   if (
     area === 'paneel' &&
-    (action === 'nieuwtype' || action === 'typeinfo' || action === 'vraagplus' || action === 'vraag')
+    ['nieuwtype', 'typeinfo', 'vraagplus', 'vraag', 'knop'].includes(action)
   ) {
     return await ticketEditor.handleModal(interaction, action, rest);
   }
