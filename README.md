@@ -31,6 +31,11 @@ Nieuwe leden krijgen automatisch een welkomstbericht in het kanaal uit
 `WELCOME_CHANNEL_ID`, met hun ping, de intake-tekst en (als je `WELCOME_IMAGE_URL`
 invult) de A.I.D.S.-banner. Botaccounts worden overgeslagen.
 
+Nieuwe leden krijgen meteen ook de instaprol uit `AUTO_ROLE_ID` (zonder die variabele
+de rol `1459910402799435909`). De bot moet daarvoor **Rollen beheren** hebben en zijn
+eigen rol moet hoger staan dan die instaprol; lukt het niet, dan gaat de rest gewoon
+door en staat de reden in de console.
+
 ---
 
 ## Op je hosting zetten
@@ -48,6 +53,7 @@ invult) de A.I.D.S.-banner. Botaccounts worden overgeslagen.
    | `TICKET_LOG_CHANNEL_ID` | nee* | Kanaal voor de transcripts |
    | `WELCOME_CHANNEL_ID` | nee | Kanaal voor het welkomstbericht |
    | `WELCOME_IMAGE_URL` | nee | Link naar de banner in dat bericht |
+   | `AUTO_ROLE_ID` | nee | Rol die nieuwe leden automatisch krijgen (standaard `1459910402799435909`) |
 
    \* Zonder stafrol kunnen alleen beheerders tickets zien en beheren.
    Zonder logkanaal wordt er geen transcript bewaard.
@@ -246,6 +252,10 @@ weg (dan bestaat die opkomst niet meer). Maak in dat geval een nieuwe opkomst aa
 **De ping bij de opkomst komt niet aan.** De bot moet de rechten **Rollen vermelden**
 en **Berichten sturen** hebben in dat kanaal; anders plaatst hij de melding zonder ping.
 
+**Nieuwe leden krijgen geen rol.** De bot mist **Rollen beheren**, of zijn rol staat
+niet hoog genoeg in de rollenlijst, of de rol uit `AUTO_ROLE_ID` bestaat niet meer.
+In de console staat welke van de drie het is.
+
 **/purge verwijdert niets.** De bot mist **Berichten beheren** of
 **Kanaalgeschiedenis lezen**, of de berichten zijn ouder dan 14 dagen — die kan
 Discord niet in bulk verwijderen.
@@ -257,5 +267,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.13.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.14.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
