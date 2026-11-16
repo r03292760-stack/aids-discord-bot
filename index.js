@@ -84,6 +84,7 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
     // Nog lopende spraaksessies en de teller van deze minuut veiligstellen.
     require('./events/voiceStateUpdate').flushAll();
     activityStore.stopTimer();
+    require('./lib/statsBoard').stop();
     await activityStore.flush().catch(() => {});
     await db.close();
     client.destroy();

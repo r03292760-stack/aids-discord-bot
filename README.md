@@ -241,6 +241,25 @@ Iedereen kan dit gebruiken en het antwoord is privé. De tellingen gaan elke
 minuut in één keer naar de database; bij het stoppen worden de laatste tellers en
 lopende spraaksessies nog weggeschreven.
 
+### /statistieken
+
+`/statistieken` zet een vast statistiekenbord in het kanaal waar je het typt. De
+bot bewerkt dat bericht **elke 5 minuten** zelf, dus de cijfers blijven kloppen
+zonder dat iemand iets hoeft te doen. Discord kan een embed niet zelf laten
+verversen; daarom doet de bot het.
+
+* `dagen:7`, `30` (standaard) of `90` — de periode van het bord.
+* Bovenaan staan berichten, spreektijd en het aantal actieve leden; daaronder de
+  vijf actiefste leden met een balk, hun berichten, spreektijd en het aantal
+  actieve dagen.
+* Alleen de paneelrol (of beheerders) kan het bord plaatsen of verversen.
+* Staat het bord al in dat kanaal, dan werkt hetzelfde command het bij in plaats
+  van een tweede neer te zetten. Na een herstart pakt de bot het bord vanzelf
+  weer op; is het bericht verwijderd, dan plaats je het opnieuw met
+  `/statistieken`.
+* Verplaats je het bord naar een ander kanaal, plaats het daar met
+  `/statistieken`; het oude bericht blijft staan maar wordt niet meer bijgewerkt.
+
 ### /lfg
 
 Iedereen kan met `/lfg` meteen een spontane sessie neerzetten, zonder eerst via
@@ -337,6 +356,7 @@ lib/storage.js               alle stores inlezen en na een .env-wijziging herver
 lib/botLog.js                het logboek: gebeurtenissen naar het gekozen kanaal
 lib/activityStore.js         activiteit per lid per dag: berichten en spreektijd
 lib/activityView.js          de gedeelde samenvatting voor /activiteit en /beheer
+lib/statsBoard.js            het statistiekenbord dat zichzelf elke 5 minuten bijwerkt
 lib/pollStore.js             peilingen en stemmen bewaren (bot_state of data/polls.json)
 lib/pollView.js              de peiling-embed met balken en knoppen
 lib/polls.js                 stemmen en sluiten via de knoppen
@@ -401,5 +421,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.26.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.27.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

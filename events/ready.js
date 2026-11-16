@@ -3,6 +3,7 @@ const config = require('../lib/config');
 const db = require('../lib/db');
 const cleanup = require('../lib/cleanup');
 const botLog = require('../lib/botLog');
+const statsBoard = require('../lib/statsBoard');
 const version = require('../lib/version');
 
 module.exports = {
@@ -53,6 +54,9 @@ module.exports = {
         { name: 'Servers', value: String(client.guilds.cache.size), inline: true },
       ],
     });
+
+    // Het statistiekenbord blijft zichzelf bijwerken, ook na een herstart.
+    statsBoard.start(client);
 
     client.user.setActivity('de rotors | /ticketpanel', { type: ActivityType.Watching });
   },
