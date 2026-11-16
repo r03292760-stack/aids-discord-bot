@@ -27,6 +27,9 @@ module.exports = {
 
       if (interaction.isChannelSelectMenu()) {
         if (area === 'paneel') return await embedComposer.handleSelect(interaction, action, rest);
+        if (area === 'beheer' && action === 'envpick') {
+          return await admin.handleEnvSelect(interaction, rest[0]);
+        }
         return;
       }
 
@@ -34,6 +37,9 @@ module.exports = {
         if (area === 'opkomst') return await opkomst.handleSelect(interaction, action, rest[0]);
         if (area === 'ticket') return await tickets.chooseType(interaction);
         if (area === 'memb') return await memberPanel.handleSelect(interaction, action);
+        if (area === 'beheer' && action === 'envpick') {
+          return await admin.handleEnvSelect(interaction, rest[0]);
+        }
         if (area === 'beheer') return await admin.handleSelect(interaction, action);
         if (area === 'agenda') return await agenda.handleSelect(interaction, action, rest[0]);
         if (area === 'paneel') return await embedComposer.handleSelect(interaction, action, rest);

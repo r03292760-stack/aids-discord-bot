@@ -120,7 +120,9 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
   daarmee het ticketpaneel in een kanaal zetten en embeds sturen. Zonder keuze geldt
   `STAFF_ROLE_ID`, en is die er ook niet, dan alleen beheerders.
 * **Instellingen** — de kanaal- en rol-ID's en de databasegegevens uit `.env`, met per
-  waarde waar hij vandaan komt. De bot controleert eerst of het kanaal of de rol echt
+  waarde waar hij vandaan komt. Kanalen en rollen kies je met een keuzelijst (wissen
+  maakt de instelling leeg); de server-ID, het welkomstbeeld en de database vul je in
+  een venster. De bot controleert eerst of het kanaal of de rol echt
   bestaat, of een kanaal het juiste soort is (categorie of tekstkanaal) en of hij er
   mag bekijken en schrijven; bij de instaprol kijkt hij of zijn eigen rol hoog genoeg
   staat en of hij rollen mag beheren. Een typefout of ontbrekend recht wordt dus
@@ -323,5 +325,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.22.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.23.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.
