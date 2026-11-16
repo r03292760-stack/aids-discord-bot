@@ -152,9 +152,10 @@ De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
   invulvenster opent meteen voor dát kanaal, zonder eerst zelf naar dat kanaal te
   gaan. De bot moet er berichten en embeds mogen plaatsen.
 * **Opkomst** — eerst kies je met een **rollen-dropdown** welke rollen een ping
-  krijgen (max 5, mag ook leeg blijven), daarna vul je de sessienaam, wanneer het
-  is, een toelichting (kaart, modset, slot) en eventueel een minimum aantal spelers
-  in. De bot plaatst het bericht met de gekozen rollen erin getagd, en met
+  krijgen (max 5, mag ook leeg blijven),   daarna vul je de sessienaam, wanneer het is, de **server** (bijvoorbeeld
+  `Reforger #1`, mag leeg blijven), een toelichting (kaart, modset, slot) en
+  eventueel een minimum aantal spelers in. De server komt als aparte regel in het
+  bericht, zo zie je meteen welke van je servers het is. De bot plaatst het bericht met de gekozen rollen erin getagd, en met
   **✅ Aanwezig**, **❔ Misschien** en **❌ Afwezig**; iedereen op de server kan
   klikken, en de lijsten en tellers werken meteen bij. Nog eens op dezelfde knop
   klikken meldt je weer af. Haalt de groep het minimum, dan wordt de embed groen;
@@ -162,8 +163,8 @@ De rol die je bij **Toegang** hebt gekozen opent met `/paneel` een klein menu:
 
 Op het opkomstbericht zelf staan nog twee dingen voor de paneelrol:
 
-* **✏️ Aanpassen** — titel, wanneer, toelichting en minimum wijzigen. De embed
-  wordt bijgewerkt en de aanmeldingen blijven staan.
+* **✏️ Aanpassen** — titel, wanneer, server, toelichting en minimum wijzigen. De
+  embed wordt bijgewerkt en de aanmeldingen blijven staan.
 * **Rollen-dropdown** — kies rollen en de bot post een ping: "nog spelers nodig
   voor *sessie*", met alleen die rollen getagd. Handig een paar uur vooraf.
 
@@ -240,6 +241,48 @@ Iedereen kan dit gebruiken en het antwoord is privé. De tellingen gaan elke
 minuut in één keer naar de database; bij het stoppen worden de laatste tellers en
 lopende spraaksessies nog weggeschreven.
 
+### /lfg
+
+Iedereen kan met `/lfg` meteen een spontane sessie neerzetten, zonder eerst via
+`/paneel` een opkomst te maken:
+
+* `/lfg spel:Arma 3` — zet een bericht neer met **Nu**, met dezelfde
+  **✅ Aanwezig**, **❔ Misschien** en **❌ Afwezig**-knoppen als een gewone
+  opkomst. Standaard zoekt hij 2 spelers.
+* `minimum:4` — vanaf hoeveel spelers de embed groen wordt.
+* `server:Reforger #1` — op welke Arma Reforger-server je speelt; komt als
+  aparte regel in het bericht. Laat je hem leeg, dan gebruikt de bot de laatst
+  gebruikte server van deze Discord; `server:-` betekent bewust geen server. De
+  laatst getypte server wordt per Discord-server onthouden.
+* `notitie:...` — bijvoorbeeld de modset of kaart.
+
+Iedereen kan het command gebruiken, dus leden starten zelf een sessie. Er wordt
+niemand gepingt: het bericht staat gewoon in het kanaal waar je het typt.
+
+Om spam tegen te gaan: maximaal twee open sessies per lid en twee minuten
+tussen twee sessies. De maker of de paneelrol sluit een sessie met **🔒**; daarna
+telt hij niet meer mee voor die limiet. Sessies staan gewoon bij de opkomsten,
+dus ze blijven na een herstart werken en worden ook opgeruimd als het bericht
+weg is.
+
+### /peiling
+
+`/peiling` zet een peiling neer waar iedereen met de knoppen op kan stemmen:
+
+* `/peiling vraag:Welke map volgende week? opties:Altis, Stratis, Tanoa` — 2 tot 5
+  opties, gescheiden door komma's (puntkomma en `|` werken ook). Elke optie
+  maximaal 80 tekens.
+* De uitslag staat meteen in het bericht: per optie een balk, het aantal stemmen
+  en het percentage. Iedereen ziet dezelfde, bijgewerkte uitslag.
+* Opnieuw op je eigen keuze klikken trekt je stem weer in; op een andere optie
+  klikken verandert je stem.
+* De maker of de paneelrol sluit de peiling met **🔒**; de uitslag blijft staan
+  en de knoppen gaan op grijs.
+
+Om spam tegen te gaan: vijf minuten tussen twee peilingen en maximaal drie open
+peilingen per lid. Peilingen blijven na een herstart werken en worden na 30 dagen
+opgeruimd.
+
 ## Een eigen `/`-command toevoegen
 
 Zet een bestand in `commands/` — de bot laadt de map automatisch.
@@ -294,6 +337,9 @@ lib/storage.js               alle stores inlezen en na een .env-wijziging herver
 lib/botLog.js                het logboek: gebeurtenissen naar het gekozen kanaal
 lib/activityStore.js         activiteit per lid per dag: berichten en spreektijd
 lib/activityView.js          de gedeelde samenvatting voor /activiteit en /beheer
+lib/pollStore.js             peilingen en stemmen bewaren (bot_state of data/polls.json)
+lib/pollView.js              de peiling-embed met balken en knoppen
+lib/polls.js                 stemmen en sluiten via de knoppen
 lib/version.js               versie en commit (staat in /beheer)
 commands/*.js                alle slash commands (automatisch geladen)
 events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete,
@@ -355,5 +401,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.25.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.26.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

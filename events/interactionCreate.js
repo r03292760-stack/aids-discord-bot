@@ -7,6 +7,7 @@ const opkomst = require('../lib/opkomst');
 const agenda = require('../lib/agenda');
 const ticketEditor = require('../lib/ticketEditor');
 const botLog = require('../lib/botLog');
+const polls = require('../lib/polls');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -83,6 +84,9 @@ module.exports = {
 
       if (area === 'beheer') return await admin.handleButton(interaction, action, rest);
       if (area === 'memb') return await memberPanel.handleButton(interaction, action, rest);
+      if (area === 'peiling') {
+        return await polls.handleButton(interaction, action, rest[0], rest[1]);
+      }
       if (area === 'paneel') return await embedComposer.handleButton(interaction, action, rest);
     } catch (error) {
       console.error('Fout bij interactie:', error);
