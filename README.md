@@ -260,6 +260,19 @@ verversen; daarom doet de bot het.
 * Verplaats je het bord naar een ander kanaal, plaats het daar met
   `/statistieken`; het oude bericht blijft staan maar wordt niet meer bijgewerkt.
 
+### /leaderbord
+
+`/leaderbord` zet een vast leaderbord neer: de tien actiefste leden van de
+periode, met 🥇🥈🥉, hun berichten, spreektijd, een balk en het aantal actieve
+dagen. Net als het statistiekenbord bewerkt de bot dit bericht elke 5 minuten
+zelf, en na een herstart pakt hij het weer op.
+
+* `dagen:7`, `30` (standaard) of `90` — de periode.
+* Alleen de paneelrol (of beheerders) kan het leaderbord plaatsen of verversen.
+* Staat het al in dat kanaal, dan werkt hetzelfde command het bij in plaats van
+  een tweede neer te zetten. Beide borden kunnen naast elkaar staan; elk heeft
+  zijn eigen bericht en periode.
+
 ### /lfg
 
 Iedereen kan met `/lfg` meteen een spontane sessie neerzetten, zonder eerst via
@@ -356,7 +369,7 @@ lib/storage.js               alle stores inlezen en na een .env-wijziging herver
 lib/botLog.js                het logboek: gebeurtenissen naar het gekozen kanaal
 lib/activityStore.js         activiteit per lid per dag: berichten en spreektijd
 lib/activityView.js          de gedeelde samenvatting voor /activiteit en /beheer
-lib/statsBoard.js            het statistiekenbord dat zichzelf elke 5 minuten bijwerkt
+lib/statsBoard.js            het statistiekenbord en leaderbord, die zichzelf bijwerken
 lib/pollStore.js             peilingen en stemmen bewaren (bot_state of data/polls.json)
 lib/pollView.js              de peiling-embed met balken en knoppen
 lib/polls.js                 stemmen en sluiten via de knoppen
@@ -421,5 +434,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.27.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.28.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

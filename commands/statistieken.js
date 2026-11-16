@@ -40,36 +40,20 @@ module.exports = {
     }
 
     const days = interaction.options.getInteger('dagen') ?? settings.stats?.days ?? 30;
-    const config = settings.stats;
 
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-    // Staat het bord al in dit kanaal? Dan bijwerken in plaats van een tweede neerzetten.
-    let message = null;
-    if (config?.messageId && config.channelId === channel.id) {
-      message = await channel.messages.fetch(config.messageId).catch(() => null);
-    }
-
     try {
-      if (message) {
-        await message.edit({ embeds: [statsBoard.boardEmbed(interaction.guildId, days)] });
-      } else {
-        message = await channel.send({ embeds: [statsBoard.boardEmbed(interaction.guildId, days)] });
-      }
+      await statsBoard.place(interaction.client, 'stats', {
+        guildId: interaction.guildId,
+        channel,
+        days,
+      });
     } catch (error) {
       return interaction.editReply({
         content: `Kon het bord niet plaatsen of bijwerken: ${error.message}`,
       });
     }
-
-    settings.update('stats', {
-      guildId: interaction.guildId,
-      channelId: channel.id,
-      messageId: message.id,
-      days,
-    });
-
-    statsBoard.start(interaction.client);
 
     return interaction.editReply({
       content: `✅ Statistiekenbord staat in ${channel}. De bot werkt het elke 5 minuten bij.`,

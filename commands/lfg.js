@@ -31,7 +31,6 @@ module.exports = {
         .setName('minimum')
         .setDescription('Hoeveel spelers heb je nodig? (standaard 2)')
         .setMinValue(1)
-        .setMaxValue(20)
         .setRequired(false)
     )
     .addStringOption((option) =>
