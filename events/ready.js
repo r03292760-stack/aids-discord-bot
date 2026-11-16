@@ -1,6 +1,9 @@
 const { ActivityType, Events } = require('discord.js');
 const config = require('../lib/config');
+const db = require('../lib/db');
 const cleanup = require('../lib/cleanup');
+const botLog = require('../lib/botLog');
+const version = require('../lib/version');
 
 module.exports = {
   name: Events.ClientReady,
@@ -39,6 +42,17 @@ module.exports = {
     } catch (error) {
       console.error('Opruimen van oude rijen mislukt:', error.message);
     }
+
+    await botLog.log(client, {
+      title: '🤖 Bot online',
+      description: `Ingelogd als ${client.user.tag}.`,
+      color: botLog.GREEN,
+      fields: [
+        { name: 'Versie', value: `v${version.version}`, inline: true },
+        { name: 'Database', value: db.isReady() ? 'verbonden' : 'niet verbonden (bestanden)', inline: true },
+        { name: 'Servers', value: String(client.guilds.cache.size), inline: true },
+      ],
+    });
 
     client.user.setActivity('de rotors | /ticketpanel', { type: ActivityType.Watching });
   },

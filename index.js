@@ -14,6 +14,7 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./lib/config');
 const db = require('./lib/db');
 const storage = require('./lib/storage');
+const activityStore = require('./lib/activityStore');
 
 const client = new Client({
   intents: [
@@ -21,6 +22,8 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    // Nodig voor de spreektijd in de activiteitenstatistiek.
+    GatewayIntentBits.GuildVoiceStates,
   ],
 });
 
@@ -78,6 +81,10 @@ start();
 // Bij stoppen nog de laatste schrijfacties naar de database laten gaan.
 for (const signal of ['SIGINT', 'SIGTERM']) {
   process.once(signal, async () => {
+    // Nog lopende spraaksessies en de teller van deze minuut veiligstellen.
+    require('./events/voiceStateUpdate').flushAll();
+    activityStore.stopTimer();
+    await activityStore.flush().catch(() => {});
     await db.close();
     client.destroy();
     process.exit(0);

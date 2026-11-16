@@ -6,6 +6,7 @@ const embedComposer = require('../lib/embedComposer');
 const opkomst = require('../lib/opkomst');
 const agenda = require('../lib/agenda');
 const ticketEditor = require('../lib/ticketEditor');
+const botLog = require('../lib/botLog');
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -16,6 +17,14 @@ module.exports = {
         const command = client.commands.get(interaction.commandName);
         if (!command) return;
         await command.execute(interaction, client);
+
+        await botLog.log(client, {
+          title: '⌨️ Commando',
+          description:
+            `**/${interaction.commandName}** door ${botLog.who(interaction.user)}` +
+            (interaction.guild ? ` in **${interaction.guild.name}**` : '') +
+            (interaction.channel ? ` / ${interaction.channel}` : ''),
+        });
         return;
       }
 
@@ -29,6 +38,9 @@ module.exports = {
         if (area === 'paneel') return await embedComposer.handleSelect(interaction, action, rest);
         if (area === 'beheer' && action === 'envpick') {
           return await admin.handleEnvSelect(interaction, rest[0]);
+        }
+        if (area === 'beheer' && action === 'logpick') {
+          return await admin.handleLogSelect(interaction);
         }
         return;
       }
@@ -74,6 +86,16 @@ module.exports = {
       if (area === 'paneel') return await embedComposer.handleButton(interaction, action, rest);
     } catch (error) {
       console.error('Fout bij interactie:', error);
+
+      await botLog.log(client, {
+        title: '⚠️ Fout bij interactie',
+        description:
+          '```' +
+          String(error.message).slice(0, 1000) +
+          '```' +
+          (interaction.customId ? `\n\`${interaction.customId}\`` : ''),
+        color: botLog.RED,
+      });
 
       const payload = {
         content: 'Er ging iets mis. Probeer het opnieuw of meld het bij de staf.',

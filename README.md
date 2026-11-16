@@ -68,9 +68,10 @@ door en staat de reden in de console.
 
    Zet je `DB_HOST`, `DB_USER` en `DB_NAME` (en `DB_PORT`/`DB_PASSWORD` als je host
 dat vraagt), dan maakt de bot bij de eerste start zelf de tabellen aan:
-`tickets`, `opkomst` met `opkomst_answers`, `agenda` met `agenda_entries`, plus
-`bot_state` voor de instellingen en ticketsoorten en `bot_counters` voor de
-nummering. Wat er nog in `data/*.json` staat, zet hij dan eenmalig over. Bij het
+`tickets`, `opkomst` met `opkomst_answers`, `agenda` met `agenda_entries`,
+`activity_daily` voor de activiteitenstatistiek, plus `bot_state` voor de
+instellingen en ticketsoorten en `bot_counters` voor de nummering. Wat er nog in
+`data/*.json` staat, zet hij dan eenmalig over. Bij het
 starten ruimt de bot ook dode rijen op: tickets waarvan het kanaal is verwijderd
 en opkomsten of agenda's waarvan kanaal of bericht niet meer bestaat. Is de
 database even niet bereikbaar, dan start de bot door met de bestanden uit `data/`
@@ -101,7 +102,7 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
 
 ## Beheer in Discord
 
-`/beheer` (beheerders) opent een privépaneel met vijf knoppen:
+`/beheer` (beheerders) opent een privépaneel met zes knoppen:
 
 * **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met per soort een knop).
   **Aanpassen** opent een
@@ -130,6 +131,11 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
   verbindt opnieuw); alleen een nieuwe `GUILD_ID` werkt pas na een herstart, omdat de
   commands dan opnieuw geplaatst worden. Waarden met **(hosting)** komen uit het
   paneel van je hosting en winnen van `.env`; die kun je daar aanpassen.
+* **Logboek** — kies het tekstkanaal waarin de bot zijn eigen activiteiten logt:
+  commando's, tickets openen, claimen en sluiten, opruimen, opkomsten en agenda's,
+  ledenacties, wijzigingen in de instellingen en fouten. Dit kanaal stel je alleen
+  hier in en staat bewust niet in `.env`; met **Testbericht** controleer je of de
+  bot er mag schrijven. Zonder kanaal wordt er niets gelogd.
 
 ### /paneel
 
@@ -214,6 +220,24 @@ een privébericht dat ze het niet mogen.
 
 ---
 
+### /activiteit
+
+`/activiteit` laat zien wie er actief is. De bot telt per lid hoeveel berichten
+hij stuurt en hoeveel tijd hij in spraakkanalen zit, per dag, en bewaart dat 90
+dagen (tabel `activity_daily`, zonder database `data/activity.json`). Berichten
+van bots en in privéberichten tellen niet mee, en het AFK-kanaal telt niet als
+spreektijd.
+
+* `/activiteit` — de tien actiefste leden van de laatste 30 dagen, met berichten
+  en spreektijd. Gesorteerd op berichten plus spreektijd.
+* `/activiteit dagen:7` of `dagen:90` — een andere periode.
+* `/activiteit lid:@iemand` — de cijfers van één lid, met zijn positie op de
+  server.
+
+Iedereen kan dit gebruiken en het antwoord is privé. De tellingen gaan elke
+minuut in één keer naar de database; bij het stoppen worden de laatste tellers en
+lopende spraaksessies nog weggeschreven.
+
 ## Een eigen `/`-command toevoegen
 
 Zet een bestand in `commands/` — de bot laadt de map automatisch.
@@ -265,9 +289,12 @@ lib/db.js                    MySQL/MariaDB-opslag, met data/*.json als terugval
 lib/cleanup.js               opruimen bij het starten: dode tickets, opkomsten en agenda's
 lib/envFile.js               .env lezen en schrijven (voor /beheer → Instellingen)
 lib/storage.js               alle stores inlezen en na een .env-wijziging herverbinden
+lib/botLog.js                het logboek: gebeurtenissen naar het gekozen kanaal
+lib/activityStore.js         activiteit per lid per dag: berichten en spreektijd
 lib/version.js               versie en commit (staat in /beheer)
 commands/*.js                alle slash commands (automatisch geladen)
-events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete
+events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete,
+                             messageCreate en voiceStateUpdate (activiteit)
 data/tickets.json            wordt automatisch gemaakt
 data/opkomst.json            wordt automatisch gemaakt
 data/agenda.json             wordt automatisch gemaakt
@@ -325,5 +352,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.23.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.24.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

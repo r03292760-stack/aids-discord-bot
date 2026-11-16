@@ -1,5 +1,6 @@
 const { MessageFlags, SlashCommandBuilder } = require('discord.js');
 const { blockedReason, purge: purgeChannel } = require('../lib/purge');
+const botLog = require('../lib/botLog');
 const { canPaneel, deniedMessage } = require('../lib/permissions');
 
 module.exports = {
@@ -68,6 +69,13 @@ module.exports = {
         content += `\n${result.skipped} ${result.skipped === 1 ? 'bericht was' : 'berichten waren'} ouder dan 14 dagen en staan er nog.`;
       }
       content += '\nRotors draaien, kanaal weer schoon.';
+
+      await botLog.log(interaction.client, {
+        title: '🧹 Opgeruimd',
+        description:
+          `${result.deleted} bericht(en) in ${channel} weggehaald door <@${interaction.user.id}>` +
+          (user ? ` van ${user}.` : '.'),
+      });
 
       return interaction.editReply({ content });
     } catch (error) {
