@@ -102,7 +102,7 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
 
 ## Beheer in Discord
 
-`/beheer` (beheerders) opent een privépaneel met zes knoppen:
+`/beheer` (beheerders) opent een privépaneel met zeven knoppen:
 
 * **Ticketpaneel** — je ziet direct hoe het paneel eruitziet (met per soort een knop).
   **Aanpassen** opent een
@@ -136,6 +136,8 @@ Windows: gebruik dezelfde drie commando's in PowerShell of Git Bash; `npm start`
   ledenacties, wijzigingen in de instellingen en fouten. Dit kanaal stel je alleen
   hier in en staat bewust niet in `.env`; met **Testbericht** controleer je of de
   bot er mag schrijven. Zonder kanaal wordt er niets gelogd.
+* **Statistieken** — dezelfde cijfers als `/activiteit`: de actiefste leden met
+  berichten en spreektijd, met knoppen voor 7, 30 of 90 dagen.
 
 ### /paneel
 
@@ -291,6 +293,7 @@ lib/envFile.js               .env lezen en schrijven (voor /beheer → Instellin
 lib/storage.js               alle stores inlezen en na een .env-wijziging herverbinden
 lib/botLog.js                het logboek: gebeurtenissen naar het gekozen kanaal
 lib/activityStore.js         activiteit per lid per dag: berichten en spreektijd
+lib/activityView.js          de gedeelde samenvatting voor /activiteit en /beheer
 lib/version.js               versie en commit (staat in /beheer)
 commands/*.js                alle slash commands (automatisch geladen)
 events/*.js                  ready, interactionCreate, guildMemberAdd, channelDelete,
@@ -352,5 +355,5 @@ zonder die map. Plaats in dat geval een nieuwe agenda.
 `.env` ontbreekt.
 
 **Is mijn update gelukt?** In `/beheer` staat de versie in de voettekst, bijvoorbeeld
-`v1.24.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
+`v1.25.0`. Zie je een oude versie of "geen .git", dan heeft de bot de nieuwe code
 niet opgehaald — kijk dan of de `git pull` bij het starten gelukt is.

@@ -1,18 +1,6 @@
 const { EmbedBuilder, MessageFlags, SlashCommandBuilder } = require('discord.js');
 const activityStore = require('../lib/activityStore');
-
-const COLOR = 0xd65c1e;
-const MEDALS = ['🥇', '🥈', '🥉'];
-
-function duration(seconds) {
-  const total = Math.round(seconds);
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.round((total % 3600) / 60);
-
-  if (hours && minutes) return `${hours} u ${minutes} min`;
-  if (hours) return `${hours} u`;
-  return `${minutes} min`;
-}
+const { duration, summaryEmbed, COLOR } = require('../lib/activityView');
 
 async function nameOf(guild, userId) {
   const member =
@@ -74,26 +62,13 @@ module.exports = {
       return interaction.editReply({ embeds: [embed] });
     }
 
-    const { top, total } = activityStore.summary(interaction.guild.id, { days, limit: 10 });
+    const { embed } = summaryEmbed(interaction.guild.id, days, 10);
 
-    if (!top.length) {
+    if (!embed) {
       return interaction.editReply({
         content: `Nog geen activiteit in de laatste ${days} dagen.`,
       });
     }
-
-    const lines = top.map((entry, index) => {
-      const badge = MEDALS[index] ?? `**${index + 1}.**`;
-      return `${badge} <@${entry.userId}> — **${entry.messages}** berichten · ${duration(entry.voiceSeconds)}`;
-    });
-
-    const embed = new EmbedBuilder()
-      .setTitle(`📊 Actiefste leden (${days} dagen)`)
-      .setColor(COLOR)
-      .setDescription(lines.join('\n'))
-      .setFooter({
-        text: `${total} leden met activiteit · gesorteerd op berichten + spreektijd`,
-      });
 
     return interaction.editReply({ embeds: [embed] });
   },
